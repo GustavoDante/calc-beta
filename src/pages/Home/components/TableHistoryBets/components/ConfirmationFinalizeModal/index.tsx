@@ -25,7 +25,9 @@ export function ConfirmationFinalizeModal({
       style={modalProps}
     >
       <Container>
-        <header>Finalizar aposta</header>
+        <header>
+          {finalizeBetWith === 'delete' ? 'Excluir ' : 'Finalizar '}aposta
+        </header>
         <button onClick={onRequestClose}>x</button>
         <div>
           {finalizeBetWith === 'delete' ? (
