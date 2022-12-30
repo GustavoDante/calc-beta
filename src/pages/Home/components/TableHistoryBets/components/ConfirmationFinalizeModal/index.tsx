@@ -1,6 +1,6 @@
 import Modal from 'react-modal'
-import { Bet } from '../../../..'
 import { Container, modalProps } from './styles'
+import { Bet } from '../../../../../../contexts/BetsContext'
 
 interface ConfirmationFinalizeModalProps {
   isOpen: boolean
@@ -16,7 +16,6 @@ export function ConfirmationFinalizeModal({
   finalizeBetWith,
   handleFinalizeBet,
 }: ConfirmationFinalizeModalProps) {
-  console.log(bet.id)
   return (
     <Modal
       appElement={document.getElementById('root') || undefined}

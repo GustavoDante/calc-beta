@@ -45,7 +45,7 @@ export const TableContainer = styled.div`
       background-color: ${(props) => props.theme['gray-600']};
       padding: 1rem;
       text-align: left;
-      color: ${(props) => props.theme['yellow-500']};
+      color: ${(props) => props.theme.white};
       font-size: 0.875rem;
       line-height: 1.6;
       text-align: center;

@@ -9,7 +9,7 @@ export function Header() {
     <HeaderContainer>
       <img src={logoBeta} alt="simbolo beta azul" />
       <nav>
-        <NavLink to="/" title="Timer">
+        <NavLink to="/" title="Calculadora">
           <Coins size={28} />
         </NavLink>
         <NavLink to="/history" title="Histórico">

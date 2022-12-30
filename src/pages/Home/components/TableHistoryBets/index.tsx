@@ -1,12 +1,11 @@
 import { format } from 'date-fns'
 import { ButtonFinalize, ContainerActions } from './styles'
 import { ptBR } from 'date-fns/locale'
-import { BetsContext } from '../../../../contexts/BetsContext'
+import { Bet, BetsContext } from '../../../../contexts/BetsContext'
 import { useContext, useState } from 'react'
 import { Trash } from 'phosphor-react'
 import { TableContainer } from '../../../../styles/global'
 import { ConfirmationFinalizeModal } from './components/ConfirmationFinalizeModal'
-import { Bet } from '../..'
 
 export function TableHistoryBets() {
   const { bets, formatCashField, handleSetBets } = useContext(BetsContext)
@@ -71,7 +70,7 @@ export function TableHistoryBets() {
             .filter((bet) => bet.win === null)
             .map((bet) => (
               <tr key={bet.id}>
-                <td>R$ {formatCashField(bet.value.toString())}</td>
+                <td>R$ {formatCashField(bet.value.toFixed(2))}</td>
                 <td>{bet.multiplier.toFixed(2)} X</td>
                 <td>R$ {formatCashField(bet.returnBet.toFixed(2))}</td>
                 <td>R$ {formatCashField(bet.profitBet.toFixed(2))}</td>

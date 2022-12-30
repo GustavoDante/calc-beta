@@ -9,10 +9,9 @@ import {
 } from './styles'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { Bet } from '../..'
 import * as zod from 'zod'
 import { format } from 'date-fns'
-import { BetsContext } from '../../../../contexts/BetsContext'
+import { Bet, BetsContext } from '../../../../contexts/BetsContext'
 
 const registerBetSchema = zod.object({
   value: zod.string().min(1, 'Valor mínimo de 1 real'),
@@ -75,6 +74,8 @@ export function FormRegisterBet() {
       returnBet -
       parseFloat(data.value.replace(/[.]/g, '').replace(/[,]/g, '.'))
 
+    console.log(profitBet)
+
     const date = new Date()
 
     const bet: Bet = {
@@ -97,12 +98,14 @@ export function FormRegisterBet() {
       setProfitBet(0)
       return
     }
-    const retorno =
-      parseFloat(value.replace(/[.]/g, '').replace(/[,]/g, '.')) *
-      parseFloat(multiplier)
+    const valor = parseFloat(value.replace(/[.]/g, '').replace(/[,]/g, '.'))
+
+    const retorno = valor * parseFloat(multiplier)
 
     const lucro =
-      retorno - parseFloat(value.replace(/[.]/g, '').replace(/[,]/g, '.'))
+      retorno > valor
+        ? retorno - parseFloat(value.replace(/[.]/g, '').replace(/[,]/g, '.'))
+        : 0
 
     setReturnBet(retorno)
     setProfitBet(lucro)
@@ -150,13 +153,17 @@ export function FormRegisterBet() {
         </ReturnValueContainer>
         <ReturnValueContainer isvalueDefined={!!profitBet}>
           <span>
-            {profitBet ? formatCashField(profitBet.toFixed(2)) : 'Lucro total'}
+            {profitBet
+              ? formatCashField(profitBet.toFixed(2))
+              : returnBet
+              ? '0,00'
+              : 'Lucro total'}
           </span>
           <span>R$</span>
         </ReturnValueContainer>
         <Separator></Separator>
 
-        <button type="submit" disabled={!profitBet || !returnBet}>
+        <button type="submit" disabled={!returnBet || !profitBet}>
           Cadastrar
         </button>
       </ContainerCard>
