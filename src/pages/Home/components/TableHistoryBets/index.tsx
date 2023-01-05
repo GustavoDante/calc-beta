@@ -8,7 +8,8 @@ import { TableContainer } from '../../../../styles/global'
 import { ConfirmationFinalizeModal } from './components/ConfirmationFinalizeModal'
 
 export function TableHistoryBets() {
-  const { bets, formatCashField, handleSetBets } = useContext(BetsContext)
+  const { bets, formatCashField, handleFinalizeBet, handleDeleteBet } =
+    useContext(BetsContext)
   const [showModal, setShowModal] = useState(false)
   const [selectBet, setSelectBet] = useState<Bet>({} as Bet)
   const [finalizeBetWith, setFinalizeBeWith] = useState<
@@ -16,21 +17,17 @@ export function TableHistoryBets() {
   >('win')
 
   function finalizeBetWithWin(id: string) {
-    handleSetBets(
-      bets.map((bet) => (bet.id === id ? { ...bet, win: true } : bet)),
-    )
+    handleFinalizeBet(id, true)
     setShowModal(false)
   }
 
   function finalizeBetWithLose(id: string) {
-    handleSetBets(
-      bets.map((bet) => (bet.id === id ? { ...bet, win: false } : bet)),
-    )
+    handleFinalizeBet(id, false)
     setShowModal(false)
   }
 
   function deleteBet(id: string) {
-    handleSetBets(bets.filter((bet) => bet.id !== id))
+    handleDeleteBet(id)
     setShowModal(false)
   }
 
@@ -46,7 +43,7 @@ export function TableHistoryBets() {
     setShowModal(true)
   }
 
-  function handleDeleteBet(bet: Bet) {
+  function handleDeleteBetWithModal(bet: Bet) {
     setSelectBet(bet)
     setFinalizeBeWith('delete')
     setShowModal(true)
@@ -75,7 +72,7 @@ export function TableHistoryBets() {
                 <td>R$ {formatCashField(bet.returnBet.toFixed(2))}</td>
                 <td>R$ {formatCashField(bet.profitBet.toFixed(2))}</td>
                 <td>
-                  {format(bet.date, "d 'de' LLLL 'às' HH:mm'h'", {
+                  {format(new Date(bet.date), "d 'de' LLLL 'às' HH:mm'h'", {
                     locale: ptBR,
                   })}
                 </td>
@@ -97,7 +94,7 @@ export function TableHistoryBets() {
                   <ContainerActions>
                     <button
                       type="button"
-                      onClick={() => handleDeleteBet(bet)}
+                      onClick={() => handleDeleteBetWithModal(bet)}
                       title="Delete bet"
                     >
                       <Trash size={20} />

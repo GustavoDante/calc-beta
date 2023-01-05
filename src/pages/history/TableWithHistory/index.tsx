@@ -34,7 +34,7 @@ export function TableWithHistory() {
                   </strong>
                 </Balance>
                 <td>
-                  {format(bet.date, "d 'de' LLLL 'às' HH:mm'h'", {
+                  {format(new Date(bet.date), "d 'de' LLLL 'às' HH:mm'h'", {
                     locale: ptBR,
                   })}
                 </td>

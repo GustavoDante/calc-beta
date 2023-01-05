@@ -12,9 +12,11 @@ export interface Bet {
 interface BetsContextData {
   bets: Bet[]
   formatCashField: (value: string) => string
-  handleSetBets: (bets: Bet[]) => void
+  handleRegisterBet: (bet: Bet) => void
   FinanceResume: number
   valueTotal: number
+  handleFinalizeBet: (id: string, win: boolean) => void
+  handleDeleteBet: (id: string) => void
 }
 
 export const BetsContext = createContext({} as BetsContextData)
@@ -24,7 +26,9 @@ interface BetsProviderProps {
 }
 
 export function BetsProvider({ children }: BetsProviderProps) {
-  const [bets, setBets] = useState<Bet[]>([])
+  const [bets, setBets] = useState<Bet[]>(
+    JSON.parse(localStorage.getItem('bets') ?? '[]'),
+  )
   const [FinanceResume, setFinanceResume] = useState(0)
   const [valueTotal, setValueTotal] = useState(0)
 
@@ -36,8 +40,23 @@ export function BetsProvider({ children }: BetsProviderProps) {
     return retorno
   }
 
-  function handleSetBets(bets: Bet[]) {
-    setBets(bets)
+  function handleRegisterBet(bet: Bet) {
+    setBets([...bets, bet])
+  }
+
+  function handleFinalizeBet(id: string, win: boolean) {
+    setBets((bets) => {
+      return bets.map((bet) => {
+        if (bet.id === id) {
+          bet.win = win
+        }
+        return bet
+      })
+    })
+  }
+
+  function handleDeleteBet(id: string) {
+    setBets(bets.filter((bet) => bet.id !== id))
   }
 
   useEffect(() => {
@@ -62,9 +81,13 @@ export function BetsProvider({ children }: BetsProviderProps) {
       setValueTotal(valueTotal)
     }
 
+    if (bets.length > 0) {
+      localStorage.setItem('bets', JSON.stringify(bets))
+      console.log('bets', bets)
+    }
+
     calcFinanceResume()
     calcValueTotal()
-    console.log(bets)
   }, [bets])
 
   return (
@@ -72,9 +95,11 @@ export function BetsProvider({ children }: BetsProviderProps) {
       value={{
         bets,
         formatCashField,
-        handleSetBets,
+        handleRegisterBet,
         FinanceResume,
         valueTotal,
+        handleFinalizeBet,
+        handleDeleteBet,
       }}
     >
       {children}

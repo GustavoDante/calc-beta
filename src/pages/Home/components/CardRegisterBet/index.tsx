@@ -21,7 +21,7 @@ const registerBetSchema = zod.object({
 export type RegisterBetData = zod.infer<typeof registerBetSchema>
 
 export function FormRegisterBet() {
-  const { handleSetBets, bets, formatCashField } = useContext(BetsContext)
+  const { handleRegisterBet, formatCashField } = useContext(BetsContext)
   const [multiplier, setMultiplier] = useState('')
   const [value, setValue] = useState('')
   const [returnBet, setReturnBet] = useState(0)
@@ -88,7 +88,7 @@ export function FormRegisterBet() {
       date,
     }
 
-    handleSetBets([...bets, bet])
+    handleRegisterBet(bet)
     resetInputs()
   }
 
