@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { ButtonFinalize, ContainerActions } from './styles'
+import { ButtonFinalize, ContainerActions, ContainerTd } from './styles'
 import { ptBR } from 'date-fns/locale'
 import { Bet, BetsContext } from '../../../../contexts/BetsContext'
 import { useContext, useState } from 'react'
@@ -65,44 +65,115 @@ export function TableHistoryBets() {
         <tbody>
           {bets
             .filter((bet) => bet.win === null)
-            .map((bet) => (
-              <tr key={bet.id}>
-                <td>R$ {formatCashField(bet.value.toFixed(2))}</td>
-                <td>{bet.multiplier.toFixed(2)} X</td>
-                <td>R$ {formatCashField(bet.returnBet.toFixed(2))}</td>
-                <td>R$ {formatCashField(bet.profitBet.toFixed(2))}</td>
-                <td>
-                  {format(new Date(bet.date), "d 'de' LLLL 'às' HH:mm'h'", {
-                    locale: ptBR,
-                  })}
-                </td>
-                <td>
-                  <ButtonFinalize
-                    type="button"
-                    status="win"
-                    onClick={() => handleFinalizeBetWithWin(bet)}
-                  >
-                    win
-                  </ButtonFinalize>
-                  <ButtonFinalize
-                    type="button"
-                    status="lose"
-                    onClick={() => handleFinalizeBetWithLose(bet)}
-                  >
-                    Lose
-                  </ButtonFinalize>
-                  <ContainerActions>
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteBetWithModal(bet)}
-                      title="Delete bet"
-                    >
-                      <Trash size={20} />
-                    </button>
-                  </ContainerActions>
-                </td>
-              </tr>
-            ))}
+            .map((bet) => {
+              if (bet.winWin === null) {
+                return (
+                  <tr key={bet.id}>
+                    <td>R$ {formatCashField(bet.value.toFixed(2))}</td>
+                    <td>{bet.multiplier.toFixed(2)} X</td>
+                    <td>R$ {formatCashField(bet.returnBet.toFixed(2))}</td>
+                    <td>R$ {formatCashField(bet.profitBet.toFixed(2))}</td>
+                    <td>
+                      {format(new Date(bet.date), "d 'de' LLLL 'às' HH:mm'h'", {
+                        locale: ptBR,
+                      })}
+                    </td>
+                    <td>
+                      <ButtonFinalize
+                        type="button"
+                        status="win"
+                        onClick={() => handleFinalizeBetWithWin(bet)}
+                      >
+                        win
+                      </ButtonFinalize>
+                      <ButtonFinalize
+                        type="button"
+                        status="lose"
+                        onClick={() => handleFinalizeBetWithLose(bet)}
+                      >
+                        Lose
+                      </ButtonFinalize>
+                      <ContainerActions>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteBetWithModal(bet)}
+                          title="Delete bet"
+                        >
+                          <Trash size={20} />
+                        </button>
+                      </ContainerActions>
+                    </td>
+                  </tr>
+                )
+              } else {
+                return (
+                  <tr key={bet.id}>
+                    <td>
+                      <ContainerTd>
+                        <span>R$ {formatCashField(bet.value.toFixed(2))}</span>
+                        <span>R$ {formatCashField(bet.value.toFixed(2))}</span>
+                      </ContainerTd>
+                    </td>
+                    <td>
+                      <ContainerTd>
+                        <span>{bet.multiplier.toFixed(2)} X</span>
+                        <span>{bet.multiplierB.toFixed(2)} X</span>
+                      </ContainerTd>
+                    </td>
+                    <td>
+                      <ContainerTd>
+                        <span>
+                          R$ {formatCashField(bet.returnBet.toFixed(2))}
+                        </span>
+                        <span>
+                          R$ {formatCashField(bet.multiplierB.toFixed(2))}
+                        </span>
+                      </ContainerTd>
+                    </td>
+                    <td>
+                      <ContainerTd>
+                        <span>
+                          R$ {formatCashField(bet.profitBet.toFixed(2))}
+                        </span>
+                        <span>
+                          R$ {formatCashField(bet.profitBetB.toFixed(2))}
+                        </span>
+                      </ContainerTd>
+                    </td>
+                    <td>
+                      {format(new Date(bet.date), "d 'de' LLLL 'às' HH:mm'h'", {
+                        locale: ptBR,
+                      })}
+                    </td>
+                    <td>
+                      <ButtonFinalize
+                        type="button"
+                        status="win"
+                        onClick={() => handleFinalizeBetWithWin(bet)}
+                      >
+                        Time A
+                      </ButtonFinalize>
+                      <ButtonFinalize
+                        type="button"
+                        status="winWin"
+                        onClick={() => handleFinalizeBetWithLose(bet)}
+                      >
+                        Time B
+                      </ButtonFinalize>
+                      <ContainerActions>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteBetWithModal(bet)}
+                          title="Delete bet"
+                        >
+                          <Trash size={20} />
+                        </button>
+                      </ContainerActions>
+                    </td>
+                  </tr>
+                )
+              }
+            })}
         </tbody>
       </table>
       <ConfirmationFinalizeModal

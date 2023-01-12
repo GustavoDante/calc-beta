@@ -7,6 +7,11 @@ export interface Bet {
   returnBet: number
   profitBet: number
   win: boolean | null
+  winWin: boolean | null
+  valueB: number
+  multiplierB: number
+  returnBetB: number
+  profitBetB: number
   date: Date
 }
 interface BetsContextData {
@@ -34,9 +39,11 @@ export function BetsProvider({ children }: BetsProviderProps) {
 
   function formatCashField(value: string) {
     let retorno = value
+
     retorno = retorno.replace(/\D/g, '')
     retorno = retorno.replace(/(\d{1})(\d{2})$/, '$1,$2')
     retorno = retorno.replace(/(?=(\d{3})+(\D))\B/g, '.')
+
     return retorno
   }
 

@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 
 interface ButtonFinalizeProps {
-  status: 'win' | 'lose'
+  status: 'win' | 'lose' | 'winWin'
 }
 
 export const ButtonFinalize = styled.button<ButtonFinalizeProps>`
@@ -29,6 +29,15 @@ export const ButtonFinalize = styled.button<ButtonFinalizeProps>`
           box-shadow: 0 0 0 0.1rem ${(props) => props.theme['red-700']};
         }
       `
+    } else if (props.status === 'winWin') {
+      return css`
+        background-color: ${props.theme['blue-700']};
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        &:hover {
+          box-shadow: 0 0 0 0.1rem ${(props) => props.theme['blue-700']};
+        }
+      `
     }
   }}
 `
@@ -50,4 +59,9 @@ export const ContainerActions = styled.div`
     background: transparent;
     color: ${(props) => props.theme['red-700']};
   }
+`
+export const ContainerTd = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 `

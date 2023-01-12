@@ -1,0 +1,259 @@
+import { ChangeEvent, useContext, useEffect, useState } from 'react'
+import {
+  FormRegisterBetContainer,
+  InputFormContainer,
+  ReturnValueContainer,
+  Separator,
+  SeparatorBigger,
+} from '../../styles'
+import * as zod from 'zod'
+import {
+  ContainerCard,
+  TeamTitle,
+  TitleCard,
+  TitlesContainer,
+  WinWinContent,
+  WinWinValueSugestionContainer,
+} from './styles'
+import { Bet, BetsContext } from '../../../../contexts/BetsContext'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { format } from 'date-fns'
+
+const registerWinWinSchema = zod.object({
+  teamAValue: zod.string().min(1, 'Valor mínimo de 1 real'),
+  teamAMultiplier: zod.string().min(1, 'Valor mínimo de 1 real'),
+  teamBMultiplier: zod.string().min(1, 'Valor mínimo de 1 real'),
+})
+
+export type RegisterWinWinData = zod.infer<typeof registerWinWinSchema>
+
+interface FormRegisterWinWinProps {
+  valueInputChange: (input: String) => string
+  multiplierInputChange: (input: String) => string
+}
+
+export function FormRegisterWinWin({
+  valueInputChange,
+  multiplierInputChange,
+}: FormRegisterWinWinProps) {
+  const { handleRegisterBet, formatCashField } = useContext(BetsContext) // eslint-disable-line
+
+  const [teamAMultiplier, setTeamAMultiplier] = useState('')
+  const [teamAValue, setTeamAValue] = useState('')
+  const [teamAReturnBet, setTeamAReturnBet] = useState(0) // eslint-disable-line
+  const [teamAProfitBet, setTeamAProfitBet] = useState(0)  // eslint-disable-line
+
+  const [teamBMultiplier, setTeamBMultiplier] = useState('')
+  const [teamBValue, setTeamBValue] = useState('')
+  const [teamBReturnBet, setTeamBReturnBet] = useState(0) // eslint-disable-line
+  const [teamBProfitBet, setTeamBProfitBet] = useState(0) // eslint-disable-line
+
+  const newRegisterWinWinForm = useForm<RegisterWinWinData>({
+    resolver: zodResolver(registerWinWinSchema),
+  })
+
+  const { handleSubmit, register } = newRegisterWinWinForm
+
+  function resetInputs() {
+    setTeamAValue('')
+    setTeamAMultiplier('')
+    setTeamBMultiplier('')
+    setTeamBValue('')
+    setTeamAReturnBet(0)
+    setTeamAProfitBet(0)
+    setTeamBReturnBet(0)
+    setTeamBProfitBet(0)
+  }
+
+  function handleFormRegisterWinWin(data: RegisterWinWinData) {
+    const date = new Date()
+
+    const bet: Bet = {
+      id: format(date, 'ddMMyyyyHHmmss' + Math.random()),
+      value: parseFloat(teamAValue.replace(/[.]/g, '').replace(/[,]/g, '.')),
+      multiplier: parseFloat(teamAMultiplier),
+      returnBet: teamAReturnBet,
+      profitBet: teamAProfitBet,
+      win: null,
+      winWin: true,
+      valueB: parseFloat(teamBValue.replace(/[.]/g, '').replace(/[,]/g, '.')),
+      multiplierB: parseFloat(teamBMultiplier),
+      returnBetB: teamBReturnBet,
+      profitBetB: teamBProfitBet,
+      date,
+    }
+
+    handleRegisterBet(bet)
+    resetInputs()
+  }
+
+  useEffect(() => {
+    if (teamAValue !== '' && teamAMultiplier !== '' && teamBMultiplier !== '') {
+      if (
+        parseFloat(teamAValue.replace(/[.]/g, '').replace(/[,]/g, '.')) <=
+          1.0 ||
+        parseFloat(teamAMultiplier) <= 1.0 ||
+        parseFloat(teamBMultiplier) <= 1.0
+      ) {
+        setTeamAReturnBet(0)
+        setTeamAProfitBet(0)
+
+        setTeamBReturnBet(0)
+        setTeamBProfitBet(0)
+        return
+      }
+      const valueA = parseFloat(
+        teamAValue.replace(/[.]/g, '').replace(/[,]/g, '.'),
+      )
+      const multiplierA = parseFloat(teamAMultiplier)
+      const multiplierB = parseFloat(teamBMultiplier)
+
+      const valueB = (valueA * multiplierA) / multiplierB
+
+      const returnBetA = valueA * multiplierA
+      const profitBetA = returnBetA - valueA - valueB
+
+      const returnBetB = valueB * multiplierB
+      const profitBetB = returnBetB - valueB - valueA
+
+      setTeamBValue(formatCashField(valueB.toFixed(2)))
+
+      setTeamAReturnBet(returnBetA)
+      setTeamAProfitBet(profitBetA)
+
+      setTeamBReturnBet(returnBetB)
+      setTeamBProfitBet(profitBetB)
+    }
+  }, [teamAValue, teamAMultiplier, teamBMultiplier, formatCashField])
+
+  const isResumePositive: boolean = teamAProfitBet >= 0 && teamBProfitBet >= 0
+  const isButtonSubmitEnable: boolean = teamAProfitBet > 0 && teamBProfitBet > 0
+
+  return (
+    <FormRegisterBetContainer onSubmit={handleSubmit(handleFormRegisterWinWin)}>
+      <ContainerCard>
+        <TitlesContainer>
+          <TeamTitle>
+            <h3>Time A</h3>
+          </TeamTitle>
+          <TitleCard>
+            <span>Calcular win/win</span>
+          </TitleCard>
+
+          <TeamTitle>
+            <h3> Time B</h3>
+          </TeamTitle>
+        </TitlesContainer>
+
+        <WinWinContent>
+          <div>
+            <InputFormContainer>
+              <input
+                {...register('teamAMultiplier')}
+                type="text"
+                placeholder="multiplicador(ODD)"
+                autoComplete="off"
+                value={teamAMultiplier}
+                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                  setTeamAMultiplier(multiplierInputChange(event.target.value))
+                }}
+              />
+              <span>X</span>
+            </InputFormContainer>
+            <InputFormContainer>
+              <input
+                {...register('teamAValue')}
+                type="text"
+                placeholder="Valor"
+                autoComplete="off"
+                value={teamAValue}
+                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                  setTeamAValue(valueInputChange(event.target.value))
+                }}
+              />
+              <span>R$</span>
+            </InputFormContainer>
+
+            <ReturnValueContainer
+              isvalueDefined={!!teamAReturnBet}
+              isValuePositive={true}
+            >
+              <span>
+                {teamAReturnBet
+                  ? formatCashField(teamAReturnBet.toFixed(2))
+                  : 'Retorno total'}
+              </span>
+              <span>R$</span>
+            </ReturnValueContainer>
+            <ReturnValueContainer
+              isvalueDefined={!!teamAProfitBet}
+              isValuePositive={isResumePositive}
+            >
+              <span>
+                {teamAProfitBet
+                  ? isResumePositive
+                    ? `${formatCashField(teamAProfitBet.toFixed(2))}`
+                    : ` - ${formatCashField(teamAProfitBet.toFixed(2))}`
+                  : 'Lucro total'}
+              </span>
+              <span>R$</span>
+            </ReturnValueContainer>
+
+            <SeparatorBigger />
+          </div>
+          <div>
+            <InputFormContainer>
+              <input
+                {...register('teamBMultiplier')}
+                type="text"
+                placeholder="multiplicador(ODD)"
+                autoComplete="off"
+                value={teamBMultiplier}
+                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                  setTeamBMultiplier(multiplierInputChange(event.target.value))
+                }}
+              />
+              <span>X</span>
+            </InputFormContainer>
+            <WinWinValueSugestionContainer>
+              <span>{teamBValue || 'Valor Sugerido'}</span>
+
+              <span>R$</span>
+            </WinWinValueSugestionContainer>
+
+            <ReturnValueContainer
+              isvalueDefined={!!teamBReturnBet}
+              isValuePositive={true}
+            >
+              <span>
+                {teamBReturnBet
+                  ? formatCashField(teamBReturnBet.toFixed(2))
+                  : 'Retorno total'}
+              </span>
+              <span>R$</span>
+            </ReturnValueContainer>
+            <ReturnValueContainer
+              isvalueDefined={!!teamBProfitBet}
+              isValuePositive={isResumePositive}
+            >
+              <span>
+                {teamBProfitBet
+                  ? isResumePositive
+                    ? `${formatCashField(teamBProfitBet.toFixed(2))}`
+                    : ` - ${formatCashField(teamBProfitBet.toFixed(2))}`
+                  : 'Lucro total'}
+              </span>
+              <span>R$</span>
+            </ReturnValueContainer>
+
+            <Separator />
+          </div>
+        </WinWinContent>
+        <button type="submit" disabled={!isButtonSubmitEnable}>
+          Cadastrar
+        </button>
+      </ContainerCard>
+    </FormRegisterBetContainer>
+  )
+}

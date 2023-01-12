@@ -1,17 +1,16 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react'
-import {
-  ContainerCard,
-  InputFormContainer,
-  ReturnValueContainer,
-  FormRegisterBetContainer,
-  TitleCard,
-  Separator,
-} from './styles'
+import { ContainerCard, TitleCard } from './styles'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 import { format } from 'date-fns'
 import { Bet, BetsContext } from '../../../../contexts/BetsContext'
+import {
+  FormRegisterBetContainer,
+  InputFormContainer,
+  ReturnValueContainer,
+  Separator,
+} from '../../styles'
 
 const registerBetSchema = zod.object({
   value: zod.string().min(1, 'Valor mínimo de 1 real'),
@@ -20,7 +19,15 @@ const registerBetSchema = zod.object({
 
 export type RegisterBetData = zod.infer<typeof registerBetSchema>
 
-export function FormRegisterBet() {
+interface FormRegisterBetProps {
+  valueInputChange: (event: String) => string
+  multiplierInputChange: (event: String) => string
+}
+
+export function FormRegisterBet({
+  valueInputChange,
+  multiplierInputChange,
+}: FormRegisterBetProps) {
   const { handleRegisterBet, formatCashField } = useContext(BetsContext)
   const [multiplier, setMultiplier] = useState('')
   const [value, setValue] = useState('')
@@ -40,42 +47,7 @@ export function FormRegisterBet() {
     setProfitBet(0)
   }
 
-  function valueInputChange(input: ChangeEvent<HTMLInputElement>) {
-    let value = input.target.value.padStart(4, '0')
-
-    value = value.replace(/\D/g, '')
-    value = value.replace(/(\d{1})(\d{2})$/, '$1,$2')
-    value = value.replace(/(?=(\d{3})+(\D))\B/g, '.')
-    value = value.replace(/(^0{2})/g, '0')
-    if (parseFloat(value.replace(/[.]/g, '').replace(/[,]/g, '.')) > 1.0) {
-      value = value.replace(/(^0{1})/g, '')
-    }
-
-    setValue(value)
-  }
-
-  function multiplierInputChange(input: ChangeEvent<HTMLInputElement>) {
-    let multiplier = input.target.value.padStart(4, '0')
-    multiplier = multiplier.replace(/\D/g, '')
-    multiplier = multiplier.replace(/(\d{1})(\d{2})$/, '$1.$2')
-    multiplier = multiplier.replace(/(^0{2})/g, '0')
-    if (parseFloat(multiplier) > 1.0) {
-      multiplier = multiplier.replace(/(^0{1})/g, '')
-    }
-    setMultiplier(multiplier)
-  }
-
   function handleFormRegisterBet(data: RegisterBetData) {
-    const returnBet =
-      parseFloat(data.value.replace(/[.]/g, '').replace(/[,]/g, '.')) *
-      parseFloat(data.multiplier)
-
-    const profitBet =
-      returnBet -
-      parseFloat(data.value.replace(/[.]/g, '').replace(/[,]/g, '.'))
-
-    console.log(profitBet)
-
     const date = new Date()
 
     const bet: Bet = {
@@ -85,6 +57,11 @@ export function FormRegisterBet() {
       returnBet,
       profitBet,
       win: null,
+      winWin: null,
+      multiplierB: 0,
+      returnBetB: 0,
+      profitBetB: 0,
+      valueB: 0,
       date,
     }
 
@@ -117,6 +94,21 @@ export function FormRegisterBet() {
         <TitleCard>
           <span>Cadastrar bet</span>
         </TitleCard>
+
+        <InputFormContainer>
+          <input
+            {...register('multiplier', { required: true })}
+            type="text"
+            placeholder="multiplicador(ODD)"
+            value={multiplier}
+            autoComplete="off"
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+              setMultiplier(multiplierInputChange(event.target.value))
+            }}
+            id="multiplier"
+          />
+          <span>X</span>
+        </InputFormContainer>
         <InputFormContainer>
           <input
             {...register('value', { required: true })}
@@ -125,25 +117,17 @@ export function FormRegisterBet() {
             autoComplete="off"
             id="value"
             value={value}
-            onChange={valueInputChange}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              setValue(valueInputChange(event.target.value))
+            }
           />
           <span>R$</span>
         </InputFormContainer>
-        <InputFormContainer>
-          <input
-            {...register('multiplier', { required: true })}
-            type="text"
-            placeholder="multiplicador(ODD)"
-            value={multiplier}
-            autoComplete="off"
-            onChange={multiplierInputChange}
-            id="multiplier"
-          />
-          <span>X</span>
-        </InputFormContainer>
-        <Separator></Separator>
 
-        <ReturnValueContainer isvalueDefined={!!returnBet}>
+        <ReturnValueContainer
+          isvalueDefined={!!returnBet}
+          isValuePositive={true}
+        >
           <span>
             {returnBet
               ? formatCashField(returnBet.toFixed(2))
@@ -151,7 +135,10 @@ export function FormRegisterBet() {
           </span>
           <span>R$</span>
         </ReturnValueContainer>
-        <ReturnValueContainer isvalueDefined={!!profitBet}>
+        <ReturnValueContainer
+          isvalueDefined={!!profitBet}
+          isValuePositive={true}
+        >
           <span>
             {profitBet
               ? formatCashField(profitBet.toFixed(2))
@@ -161,7 +148,8 @@ export function FormRegisterBet() {
           </span>
           <span>R$</span>
         </ReturnValueContainer>
-        <Separator></Separator>
+
+        <Separator />
 
         <button type="submit" disabled={!returnBet || !profitBet}>
           Cadastrar

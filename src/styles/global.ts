@@ -39,7 +39,7 @@ export const TableContainer = styled.div`
   table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 600px;
+    min-width: 900px;
 
     th {
       background-color: ${(props) => props.theme['gray-600']};
@@ -68,6 +68,8 @@ export const TableContainer = styled.div`
       font-size: 0.875rem;
       line-height: 1.6;
       text-align: center;
+      /* display: flex; */
+      /* flex-direction: column; */
 
       &:first-child {
         padding-left: 1.5rem;
@@ -76,6 +78,7 @@ export const TableContainer = styled.div`
       &:last-child {
         padding-right: 1.5rem;
         position: relative;
+        white-space: nowrap;
       }
     }
   }
