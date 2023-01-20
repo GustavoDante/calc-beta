@@ -15,14 +15,6 @@ export const LayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  & > img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
-    height: 39.4rem;
-  }
-
   & > div {
     z-index: 0;
   }
