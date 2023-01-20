@@ -20,6 +20,13 @@ export const CardsContainer = styled.div`
   width: 100%;
   justify-content: space-around;
   align-items: start;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+  }
 `
 
 export const FormRegisterBetContainer = styled.form`
@@ -69,6 +76,10 @@ export const InputFormContainer = styled.div`
     &:focus {
       box-shadow: none;
     }
+
+    @media (max-width: 768px) {
+      width: 80%;
+    }
   }
 
   > span {
@@ -109,6 +120,7 @@ export const ReturnValueContainer = styled.div<ReturnValueContainerProps>`
     color: ${(props) =>
       props.isvalueDefined ? props.theme.white : props.theme['gray-500']};
     font-weight: 600;
+    white-space: nowrap;
   }
 `
 export const Separator = styled.div`

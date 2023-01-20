@@ -63,7 +63,7 @@ export function BetsProvider({ children }: BetsProviderProps) {
   }
 
   function handleDeleteBet(id: string) {
-    setBets(bets.filter((bet) => bet.id !== id))
+    setBets((bets) => bets.filter((bet) => bet.id !== id))
   }
 
   useEffect(() => {

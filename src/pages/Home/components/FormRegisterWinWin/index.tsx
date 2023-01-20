@@ -138,7 +138,7 @@ export function FormRegisterWinWin({
             <h3>Time A</h3>
           </TeamTitle>
           <TitleCard>
-            <span>Calcular win/win</span>
+            <span>win/win</span>
           </TitleCard>
 
           <TeamTitle>

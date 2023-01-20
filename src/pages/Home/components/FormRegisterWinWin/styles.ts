@@ -9,6 +9,11 @@ export const WinWinContent = styled.div`
     text-align: center;
     padding: 0.5rem;
   }
+
+  @media (max-width: 768px) {
+    /* grid-template-columns: 1fr; */
+    width: 80%;
+  }
 `
 
 export const ContainerCard = styled.div`
@@ -52,7 +57,7 @@ export const TitleCard = styled.div`
 
   &::after {
     content: '';
-    width: 120%;
+    width: 180%;
     height: 0.125rem;
     border-radius: 5px;
     background: ${(props) => props.theme['gray-600']};
@@ -84,5 +89,6 @@ export const WinWinValueSugestionContainer = styled.div`
   > span {
     color: ${(props) => props.theme['green-100']};
     font-weight: 600;
+    white-space: nowrap;
   }
 `

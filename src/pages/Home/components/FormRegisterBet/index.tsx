@@ -92,7 +92,7 @@ export function FormRegisterBet({
     <FormRegisterBetContainer onSubmit={handleSubmit(handleFormRegisterBet)}>
       <ContainerCard>
         <TitleCard>
-          <span>Cadastrar bet</span>
+          <span>bet simples</span>
         </TitleCard>
 
         <InputFormContainer>
