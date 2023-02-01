@@ -39,7 +39,12 @@ export const TableContainer = styled.div`
   table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 900px;
+    min-width: 930px;
+
+    th:first-child {
+      width: 5px;
+      padding: 0;
+    }
 
     th {
       background-color: ${(props) => props.theme['gray-600']};
@@ -58,6 +63,17 @@ export const TableContainer = styled.div`
       &:last-child {
         border-top-right-radius: 8px;
         padding-right: 1.5rem;
+      }
+    }
+
+    td:first-child {
+      > div {
+        > strong:first-child {
+          color: ${(props) => props.theme['green-700']};
+        }
+        > strong:last-child {
+          color: ${(props) => props.theme['blue-700']};
+        }
       }
     }
 
@@ -81,5 +97,16 @@ export const TableContainer = styled.div`
         white-space: nowrap;
       }
     }
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    border-radius: 2px;
+    background: ${(props) => props.theme['gray-100']};
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${(props) => props.theme['gray-600']};
+    border-radius: 2px;
   }
 `

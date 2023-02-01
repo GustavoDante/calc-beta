@@ -13,6 +13,7 @@ export function TableWithHistory() {
       <table>
         <thead>
           <tr>
+            <th></th>
             <th>Valor apostado</th>
             <th>ODD</th>
             <th>Retorno</th>
@@ -23,23 +24,63 @@ export function TableWithHistory() {
         <tbody>
           {bets
             .filter((bet) => bet.win !== null)
-            .map((bet) => (
-              <tr key={bet.id}>
-                <td>R$ {formatCashField(bet.value.toString())}</td>
-                <td>{bet.multiplier.toFixed(2)} X</td>
-                <td>R$ {formatCashField(bet.returnBet.toFixed(2))}</td>
-                <Balance status={bet.win ? 'green' : 'red'}>
-                  <strong>
-                    R$ {formatCashField(bet.profitBet.toFixed(2))}
-                  </strong>
-                </Balance>
-                <td>
-                  {format(new Date(bet.date), "d 'de' LLLL 'às' HH:mm'h'", {
-                    locale: ptBR,
-                  })}
-                </td>
-              </tr>
-            ))}
+            .map((bet) => {
+              if (bet.winWin === false) {
+                return (
+                  <tr key={bet.id}>
+                    <td></td>
+                    <td>R$ {formatCashField(bet.value.toString())}</td>
+                    <td>{bet.multiplier.toFixed(2)} X</td>
+                    <td>R$ {formatCashField(bet.returnBet.toFixed(2))}</td>
+                    {bet.win ? (
+                      <Balance status={'green'}>
+                        <strong>
+                          + R$ {formatCashField(bet.profitBet.toFixed(2))}
+                        </strong>
+                      </Balance>
+                    ) : (
+                      <Balance status={'red'}>
+                        <strong>
+                          - R$ {formatCashField(bet.value.toFixed(2))}
+                        </strong>
+                      </Balance>
+                    )}
+                    <td>
+                      {format(new Date(bet.date), "d 'de' LLLL 'às' HH:mm'h'", {
+                        locale: ptBR,
+                      })}
+                    </td>
+                  </tr>
+                )
+              } else {
+                return (
+                  <tr key={bet.id}>
+                    <td></td>
+                    <td>R$ {formatCashField(bet.value.toString())}</td>
+                    <td>{bet.multiplier.toFixed(2)} X</td>
+                    <td>R$ {formatCashField(bet.returnBet.toFixed(2))}</td>
+                    {bet.win ? (
+                      <Balance status={'green'}>
+                        <strong>
+                          + R$ {formatCashField(bet.profitBet.toFixed(2))}
+                        </strong>
+                      </Balance>
+                    ) : (
+                      <Balance status={'red'}>
+                        <strong>
+                          - R$ {formatCashField(bet.value.toFixed(2))}
+                        </strong>
+                      </Balance>
+                    )}
+                    <td>
+                      {format(new Date(bet.date), "d 'de' LLLL 'às' HH:mm'h'", {
+                        locale: ptBR,
+                      })}
+                    </td>
+                  </tr>
+                )
+              }
+            })}
         </tbody>
       </table>
     </TableContainer>

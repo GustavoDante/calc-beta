@@ -77,6 +77,7 @@ export function FormRegisterWinWin({
       profitBet: teamAProfitBet,
       win: null,
       winWin: true,
+      whoWin: null,
       valueB: parseFloat(teamBValue.replace(/[.]/g, '').replace(/[,]/g, '.')),
       multiplierB: parseFloat(teamBMultiplier),
       returnBetB: teamBReturnBet,

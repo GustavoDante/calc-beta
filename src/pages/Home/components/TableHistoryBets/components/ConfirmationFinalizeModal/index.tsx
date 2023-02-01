@@ -6,9 +6,10 @@ interface ConfirmationFinalizeModalProps {
   isOpen: boolean
   onRequestClose: () => void
   bet: Bet
-  finalizeBetWith: 'win' | 'lose' | 'delete'
+  finalizeBetWith: 'win' | 'lose' | 'delete' | 1 | 2
   handleFinalizeBet: (id: string) => void
 }
+
 export function ConfirmationFinalizeModal({
   isOpen,
   onRequestClose,
@@ -33,7 +34,8 @@ export function ConfirmationFinalizeModal({
             <span>Tem certeza que deseja excluir esta aposta?</span>
           ) : (
             <span>
-              Tem certeza que deseja finalizar esta aposta com{' '}
+              Tem certeza que deseja finalizar esta aposta com
+              {}
               <strong>
                 {finalizeBetWith === 'win' ? 'vitória' : 'derrota'}
               </strong>

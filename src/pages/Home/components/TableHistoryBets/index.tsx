@@ -13,7 +13,7 @@ export function TableHistoryBets() {
   const [showModal, setShowModal] = useState(false)
   const [selectBet, setSelectBet] = useState<Bet>({} as Bet)
   const [finalizeBetWith, setFinalizeBeWith] = useState<
-    'win' | 'lose' | 'delete'
+    'win' | 'lose' | 'delete' | 1 | 2
   >('win')
 
   function finalizeBetWithWin(id: string) {
@@ -29,6 +29,12 @@ export function TableHistoryBets() {
   function deleteBet(id: string) {
     handleDeleteBet(id)
     setShowModal(false)
+  }
+
+  function handleFinalizeBetWinWin(bet: Bet, whoWin: 1 | 2) {
+    setSelectBet(bet)
+    setFinalizeBeWith(whoWin)
+    setShowModal(true)
   }
 
   function handleFinalizeBetWithWin(bet: Bet) {
@@ -54,6 +60,7 @@ export function TableHistoryBets() {
       <table>
         <thead>
           <tr>
+            <th></th>
             <th>Valor apostado</th>
             <th>ODD</th>
             <th>Retorno</th>
@@ -66,9 +73,10 @@ export function TableHistoryBets() {
           {bets
             .filter((bet) => bet.win === null)
             .map((bet) => {
-              if (bet.winWin === null) {
+              if (bet.winWin === false) {
                 return (
                   <tr key={bet.id}>
+                    <td></td>
                     <td>R$ {formatCashField(bet.value.toFixed(2))}</td>
                     <td>{bet.multiplier.toFixed(2)} X</td>
                     <td>R$ {formatCashField(bet.returnBet.toFixed(2))}</td>
@@ -81,14 +89,14 @@ export function TableHistoryBets() {
                     <td>
                       <ButtonFinalize
                         type="button"
-                        status="win"
+                        status="green"
                         onClick={() => handleFinalizeBetWithWin(bet)}
                       >
                         win
                       </ButtonFinalize>
                       <ButtonFinalize
                         type="button"
-                        status="lose"
+                        status="red"
                         onClick={() => handleFinalizeBetWithLose(bet)}
                       >
                         Lose
@@ -109,6 +117,13 @@ export function TableHistoryBets() {
                 return (
                   <tr key={bet.id}>
                     <td>
+                      <ContainerTd>
+                        <strong>A</strong>
+                        <strong>B</strong>
+                      </ContainerTd>
+                    </td>
+                    <td>
+                      {/* <strong>Time B</strong> */}
                       <ContainerTd>
                         <span>R$ {formatCashField(bet.value.toFixed(2))}</span>
                         <span>R$ {formatCashField(bet.value.toFixed(2))}</span>
@@ -148,15 +163,15 @@ export function TableHistoryBets() {
                     <td>
                       <ButtonFinalize
                         type="button"
-                        status="win"
-                        onClick={() => handleFinalizeBetWithWin(bet)}
+                        status="green"
+                        onClick={() => handleFinalizeBetWinWin(bet, 1)}
                       >
                         Time A
                       </ButtonFinalize>
                       <ButtonFinalize
                         type="button"
-                        status="winWin"
-                        onClick={() => handleFinalizeBetWithLose(bet)}
+                        status="blue"
+                        onClick={() => handleFinalizeBetWinWin(bet, 2)}
                       >
                         Time B
                       </ButtonFinalize>

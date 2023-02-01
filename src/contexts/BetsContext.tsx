@@ -7,7 +7,8 @@ export interface Bet {
   returnBet: number
   profitBet: number
   win: boolean | null
-  winWin: boolean | null
+  winWin: boolean
+  whoWin: 1 | 2 | null
   valueB: number
   multiplierB: number
   returnBetB: number

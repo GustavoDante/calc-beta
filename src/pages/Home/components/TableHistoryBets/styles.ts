@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 
 interface ButtonFinalizeProps {
-  status: 'win' | 'lose' | 'winWin'
+  status: 'green' | 'red' | 'blue'
 }
 
 export const ButtonFinalize = styled.button<ButtonFinalizeProps>`
@@ -10,7 +10,7 @@ export const ButtonFinalize = styled.button<ButtonFinalizeProps>`
   height: 3rem;
   color: ${(props) => props.theme['gray-300']};
   ${(props) => {
-    if (props.status === 'win') {
+    if (props.status === 'green') {
       return css`
         background-color: ${props.theme['green-700']};
         border-top-left-radius: 8px;
@@ -19,7 +19,7 @@ export const ButtonFinalize = styled.button<ButtonFinalizeProps>`
           box-shadow: 0 0 0 0.1rem ${(props) => props.theme['green-700']};
         }
       `
-    } else if (props.status === 'lose') {
+    } else if (props.status === 'red') {
       return css`
         background-color: ${props.theme['red-700']};
         border-top-right-radius: 8px;
@@ -29,7 +29,7 @@ export const ButtonFinalize = styled.button<ButtonFinalizeProps>`
           box-shadow: 0 0 0 0.1rem ${(props) => props.theme['red-700']};
         }
       `
-    } else if (props.status === 'winWin') {
+    } else if (props.status === 'blue') {
       return css`
         background-color: ${props.theme['blue-700']};
         border-top-right-radius: 8px;
