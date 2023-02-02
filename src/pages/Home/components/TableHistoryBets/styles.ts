@@ -60,8 +60,3 @@ export const ContainerActions = styled.div`
     color: ${(props) => props.theme['red-700']};
   }
 `
-export const ContainerTd = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`

@@ -1,10 +1,9 @@
 import { useContext } from 'react'
 import { BetsContext } from '../../../contexts/BetsContext'
-import { TableContainer } from '../../../styles/global'
+import { ContainerTd, TableContainer } from '../../../styles/global'
 import { format } from 'date-fns'
-import { Balance } from './styles'
+import { SpanWithStatus } from './styles'
 import ptBR from 'date-fns/locale/pt-BR'
-import { ContainerTd } from '../../Home/components/TableHistoryBets/styles'
 
 export function TableWithHistory() {
   const { bets, formatCashField } = useContext(BetsContext)
@@ -34,17 +33,17 @@ export function TableWithHistory() {
                     <td>{bet.multiplier.toFixed(2)} X</td>
                     <td>R$ {formatCashField(bet.returnBet.toFixed(2))}</td>
                     {bet.win ? (
-                      <Balance status={'green'}>
-                        <strong>
+                      <td>
+                        <SpanWithStatus status={'green'}>
                           + R$ {formatCashField(bet.profitBet.toFixed(2))}
-                        </strong>
-                      </Balance>
+                        </SpanWithStatus>
+                      </td>
                     ) : (
-                      <Balance status={'red'}>
-                        <strong>
+                      <td>
+                        <SpanWithStatus status={'red'}>
                           - R$ {formatCashField(bet.value.toFixed(2))}
-                        </strong>
-                      </Balance>
+                        </SpanWithStatus>
+                      </td>
                     )}
                     <td>
                       {format(new Date(bet.date), "d 'de' LLLL 'às' HH:mm'h'", {
@@ -58,41 +57,72 @@ export function TableWithHistory() {
                   <tr key={bet.id}>
                     <td>
                       <ContainerTd>
-                        <strong>A</strong>
-                        <strong>B</strong>
-                      </ContainerTd>
-                    </td>
-                    <td>
-                      {/* <strong>Time B</strong> */}
-                      <ContainerTd>
-                        <span>R$ {formatCashField(bet.value.toFixed(2))}</span>
-                        <span>R$ {formatCashField(bet.valueB.toFixed(2))}</span>
-                      </ContainerTd>
-                    </td>
-                    <td>
-                      <ContainerTd>
-                        <span>{bet.multiplier.toFixed(2)} X</span>
-                        <span>{bet.multiplierB.toFixed(2)} X</span>
+                        <SpanWithStatus
+                          status={bet.whoWin === 1 ? 'green' : 'red'}
+                        >
+                          A
+                        </SpanWithStatus>
+                        <SpanWithStatus
+                          status={bet.whoWin === 2 ? 'green' : 'red'}
+                        >
+                          B
+                        </SpanWithStatus>
                       </ContainerTd>
                     </td>
                     <td>
                       <ContainerTd>
-                        <span>
+                        <SpanWithStatus
+                          status={bet.whoWin === 1 ? 'green' : 'red'}
+                        >
+                          R$ {formatCashField(bet.value.toFixed(2))}
+                        </SpanWithStatus>
+                        <SpanWithStatus
+                          status={bet.whoWin === 2 ? 'green' : 'red'}
+                        >
+                          R$ {formatCashField(bet.valueB.toFixed(2))}
+                        </SpanWithStatus>
+                      </ContainerTd>
+                    </td>
+                    <td>
+                      <ContainerTd>
+                        <SpanWithStatus
+                          status={bet.whoWin === 1 ? 'green' : 'red'}
+                        >
+                          {bet.multiplier.toFixed(2)} X
+                        </SpanWithStatus>
+                        <SpanWithStatus
+                          status={bet.whoWin === 2 ? 'green' : 'red'}
+                        >
+                          {bet.multiplierB.toFixed(2)} X
+                        </SpanWithStatus>
+                      </ContainerTd>
+                    </td>
+                    <td>
+                      <ContainerTd>
+                        <SpanWithStatus
+                          status={bet.whoWin === 1 ? 'green' : 'red'}
+                        >
                           R$ {formatCashField(bet.returnBet.toFixed(2))}
-                        </span>
-                        <span>
+                        </SpanWithStatus>
+                        <SpanWithStatus
+                          status={bet.whoWin === 2 ? 'green' : 'red'}
+                        >
                           R$ {formatCashField(bet.returnBetB.toFixed(2))}
-                        </span>
+                        </SpanWithStatus>
                       </ContainerTd>
                     </td>
                     <td>
                       <ContainerTd>
-                        <span>
+                        <SpanWithStatus
+                          status={bet.whoWin === 1 ? 'green' : 'red'}
+                        >
                           R$ {formatCashField(bet.profitBet.toFixed(2))}
-                        </span>
-                        <span>
+                        </SpanWithStatus>
+                        <SpanWithStatus
+                          status={bet.whoWin === 2 ? 'green' : 'red'}
+                        >
                           R$ {formatCashField(bet.profitBetB.toFixed(2))}
-                        </span>
+                        </SpanWithStatus>
                       </ContainerTd>
                     </td>
                     <td>

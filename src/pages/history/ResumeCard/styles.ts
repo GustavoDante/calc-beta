@@ -12,33 +12,11 @@ export const Card = styled.div`
   justify-content: center;
   background: ${(props) => props.theme['blue-1000']};
   width: 40%;
+  min-width: 13rem;
   padding: 2rem;
   border-radius: 8px;
 `
 
-export const TitleCard = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin: -3.5rem 0 1rem 0;
-  width: 50%;
-
-  > h1 {
-    padding: 1rem;
-    background: ${(props) => props.theme['gray-600']};
-    border-radius: 10px 10px 0px 0px;
-    padding: 5px 20px;
-  }
-
-  ::after {
-    content: '';
-    width: 100%;
-    height: 0.125rem;
-    border-radius: 5px;
-    background: ${(props) => props.theme['gray-600']};
-  }
-`
 export const CardValuesContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -48,7 +26,8 @@ export const CardValuesContainer = styled.div`
   margin: 0.21rem 0;
 
   & > h5 {
-    color: ${(props) => props.theme['yellow-500']};
+    color: ${(props) => props.theme['purple-500']};
+    font-size: 1rem;
   }
 
   & > div {

@@ -33,14 +33,18 @@ export const FormRegisterBetContainer = styled.form`
   display: flex;
   justify-content: space-between;
 
+  input::placeholder {
+    color: ${(props) => props.theme['gray-500']};
+  }
+
   button[type='submit'] {
-    background: ${(props) => props.theme['yellow-500']};
+    background: ${(props) => props.theme['purple-500']};
     width: 100%;
     padding: 0.5rem;
     border-radius: 10px;
-    border: 3px solid ${(props) => props.theme['yellow-500']};
-    color: ${(props) => props.theme['gray-900']};
-    font-weight: 600;
+    border: 3px solid ${(props) => props.theme['purple-500']};
+    color: ${(props) => props.theme.white};
+    font-weight: 800;
 
     transition: filter 0.2s;
 
@@ -60,11 +64,11 @@ export const InputFormContainer = styled.div`
   justify-content: space-between;
   flex-direction: row;
   align-items: center;
-  background: ${(props) => props.theme['blue-700']};
-  border-radius: 34rem;
+  background: ${(props) => props.theme['purple-700']};
+  border-radius: 14px;
   padding: 0.7rem;
   margin-bottom: 1rem;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
 
   > input {
     width: 10rem;
@@ -91,7 +95,7 @@ export const InputFormContainer = styled.div`
   }
 
   :focus-within {
-    box-shadow: 0 0 0 2px ${(props) => props.theme['blue-400']};
+    box-shadow: 0 0 0 2px ${(props) => props.theme['purple-500']};
   }
 `
 
@@ -104,12 +108,12 @@ export const ReturnValueContainer = styled.div<ReturnValueContainerProps>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  border: 1px solid
+  border: 2px solid
     ${(props) =>
       props.isValuePositive
-        ? props.theme['green-500']
-        : props.theme['red-700']};
-  border-radius: 34px;
+        ? props.theme['purple-500']
+        : props.theme['red-500']};
+  border-radius: 14px;
   padding: 0.7rem;
   justify-content: space-between;
   margin-bottom: 1rem;

@@ -1,6 +1,7 @@
 import { useContext } from 'react'
-import { Container, Card, TitleCard, CardValuesContainer } from './styles'
+import { Container, Card, CardValuesContainer } from './styles'
 import { BetsContext } from '../../../contexts/BetsContext'
+import { TitleCard } from '../../../styles/global'
 
 export function ResumeCard() {
   const { bets, formatCashField, FinanceResume, valueTotal } =
@@ -10,7 +11,7 @@ export function ResumeCard() {
     <Container>
       <Card>
         <TitleCard>
-          <h1>Resumo</h1>
+          <span>Resumo</span>
         </TitleCard>
         <CardValuesContainer>
           <h5>Total valor apostado</h5>
@@ -19,15 +20,20 @@ export function ResumeCard() {
           </div>
         </CardValuesContainer>
         <CardValuesContainer>
-          <h5>Total apostas feitas</h5>
+          <h5>Total de WinWins</h5>
           <div>
-            <span>{bets.length}</span>
+            <span>{bets.filter((bet) => bet.winWin === true).length}</span>
           </div>
         </CardValuesContainer>
         <CardValuesContainer>
           <h5>Total de Wins</h5>
           <div>
-            <span>{bets.filter((bet) => bet.win === true).length}</span>
+            <span>
+              {
+                bets.filter((bet) => bet.win === true && bet.winWin === false)
+                  .length
+              }
+            </span>
           </div>
         </CardValuesContainer>
         <CardValuesContainer>

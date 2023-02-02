@@ -27,7 +27,7 @@ export const Container = styled.div`
     margin-bottom: 2rem;
     font-size: 1.5rem;
     font-weight: 600;
-    color: ${(props) => props.theme['yellow-500']};
+    color: ${(props) => props.theme['purple-500']};
   }
 
   & > div {

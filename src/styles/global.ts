@@ -66,17 +66,6 @@ export const TableContainer = styled.div`
       }
     }
 
-    td:first-child {
-      > div {
-        > strong:first-child {
-          color: ${(props) => props.theme['green-700']};
-        }
-        > strong:last-child {
-          color: ${(props) => props.theme['blue-700']};
-        }
-      }
-    }
-
     td {
       background-color: ${(props) => props.theme['gray-700']};
       border-top: ${(props) => props.theme['gray-800']};
@@ -109,4 +98,36 @@ export const TableContainer = styled.div`
     background: ${(props) => props.theme['gray-600']};
     border-radius: 2px;
   }
+`
+
+export const ContainerTd = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`
+
+export const TitleCard = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  margin: -3.5rem 0 1rem 0;
+
+  & > span {
+    background: ${(props) => props.theme['gray-100']};
+    border-radius: 14px;
+    padding: 0.875rem 1.5rem;
+    color: ${(props) => props.theme['blue-1000']};
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  /* &::after {
+    content: '';
+    width: 100%;
+    height: 0.125rem;
+    border-radius: 5px;
+    background: ${(props) => props.theme['gray-600']};
+  } */
 `

@@ -1,5 +1,5 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react'
-import { ContainerCard, TitleCard } from './styles'
+import { ContainerCard } from './styles'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
@@ -11,6 +11,7 @@ import {
   ReturnValueContainer,
   Separator,
 } from '../../styles'
+import { TitleCard } from '../../../../styles/global'
 
 const registerBetSchema = zod.object({
   value: zod.string().min(1, 'Valor mínimo de 1 real'),

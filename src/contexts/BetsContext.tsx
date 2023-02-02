@@ -21,7 +21,7 @@ interface BetsContextData {
   handleRegisterBet: (bet: Bet) => void
   FinanceResume: number
   valueTotal: number
-  handleFinalizeBet: (id: string, win: boolean) => void
+  handleFinalizeBet: (id: string, win: boolean, whoWin: 1 | 2 | null) => void
   handleDeleteBet: (id: string) => void
 }
 
@@ -52,11 +52,12 @@ export function BetsProvider({ children }: BetsProviderProps) {
     setBets([...bets, bet])
   }
 
-  function handleFinalizeBet(id: string, win: boolean) {
+  function handleFinalizeBet(id: string, win: boolean, whoWin: 1 | 2 | null) {
     setBets((bets) => {
       return bets.map((bet) => {
         if (bet.id === id) {
           bet.win = win
+          bet.whoWin = whoWin
         }
         return bet
       })
@@ -71,8 +72,15 @@ export function BetsProvider({ children }: BetsProviderProps) {
     function calcFinanceResume() {
       const valueOfWins = bets
         .filter((bet) => bet.win === true)
+        .filter((bet) => bet.winWin === false)
+        .reduce((total, bet) => total + bet.profitBet, 0)
+
+      const valueOfWinsWins = bets
+        .filter((bet) => bet.win === true)
+        .filter((bet) => bet.winWin === true)
         .reduce(
-          (total, bet) => total + (bet.value * bet.multiplier - bet.value),
+          (total, bet) =>
+            total + (bet.whoWin === 1 ? bet.profitBet : bet.profitBetB),
           0,
         )
 
@@ -80,7 +88,7 @@ export function BetsProvider({ children }: BetsProviderProps) {
         .filter((bet) => bet.win === false)
         .reduce((total, value) => total + value.value, 0)
 
-      setFinanceResume(valueOfWins - valueOfLosses)
+      setFinanceResume(valueOfWins + valueOfWinsWins - valueOfLosses)
     }
 
     function calcValueTotal() {
@@ -91,7 +99,6 @@ export function BetsProvider({ children }: BetsProviderProps) {
 
     if (bets.length > 0) {
       localStorage.setItem('bets', JSON.stringify(bets))
-      console.log('bets', bets)
     }
 
     calcFinanceResume()

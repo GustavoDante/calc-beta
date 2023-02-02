@@ -9,11 +9,6 @@ export const WinWinContent = styled.div`
     text-align: center;
     padding: 0.5rem;
   }
-
-  @media (max-width: 768px) {
-    /* grid-template-columns: 1fr; */
-    width: 80%;
-  }
 `
 
 export const ContainerCard = styled.div`
@@ -30,10 +25,10 @@ export const ContainerCard = styled.div`
 
 export const TeamTitle = styled.div`
   text-align: center;
-  background: ${(props) => props.theme['blue-100']};
+  background: ${(props) => props.theme['purple-500']};
 
-  border-radius: 34px;
-  padding: 0.875rem 1.5rem;
+  border-radius: 14px;
+  padding: 0.5rem 1.5rem;
 
   & > h3 {
     color: ${(props) => props.theme.white};
@@ -48,20 +43,20 @@ export const TitleCard = styled.div`
   flex-direction: column;
 
   & > span {
-    background: ${(props) => props.theme['gray-600']};
-    border-radius: 10px 10px 0px 0px;
-    padding: 0.875rem;
-    color: ${(props) => props.theme.white};
+    background: ${(props) => props.theme['gray-100']};
+    border-radius: 14px;
+    padding: 0.875rem 1.5rem;
+    color: ${(props) => props.theme.black};
     font-weight: 600;
   }
 
-  &::after {
+  /* &::after {
     content: '';
     width: 180%;
     height: 0.125rem;
     border-radius: 5px;
     background: ${(props) => props.theme['gray-600']};
-  }
+  } */
 `
 
 export const TitlesContainer = styled.div`
@@ -78,8 +73,8 @@ export const WinWinValueSugestionContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   background: transparent;
-  border: 1px solid ${(props) => props.theme['green-100']};
-  border-radius: 34px;
+  border: 2px solid ${(props) => props.theme['green-400']};
+  border-radius: 14px;
 
   padding: 0.7rem;
   margin-bottom: 1rem;
@@ -87,7 +82,7 @@ export const WinWinValueSugestionContainer = styled.div`
   cursor: not-allowed;
 
   > span {
-    color: ${(props) => props.theme['green-100']};
+    color: ${(props) => props.theme['green-400']};
     font-weight: 600;
     white-space: nowrap;
   }

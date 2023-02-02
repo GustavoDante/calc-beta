@@ -1,10 +1,10 @@
 import { format } from 'date-fns'
-import { ButtonFinalize, ContainerActions, ContainerTd } from './styles'
+import { ButtonFinalize, ContainerActions } from './styles'
 import { ptBR } from 'date-fns/locale'
 import { Bet, BetsContext } from '../../../../contexts/BetsContext'
 import { useContext, useState } from 'react'
 import { Trash } from 'phosphor-react'
-import { TableContainer } from '../../../../styles/global'
+import { ContainerTd, TableContainer } from '../../../../styles/global'
 import { ConfirmationFinalizeModal } from './components/ConfirmationFinalizeModal'
 
 export function TableHistoryBets() {
@@ -17,12 +17,12 @@ export function TableHistoryBets() {
   >('win')
 
   function finalizeBetWithWin(id: string) {
-    handleFinalizeBet(id, true)
+    handleFinalizeBet(id, true, null)
     setShowModal(false)
   }
 
   function finalizeBetWithLose(id: string) {
-    handleFinalizeBet(id, false)
+    handleFinalizeBet(id, false, null)
     setShowModal(false)
   }
 
@@ -32,7 +32,7 @@ export function TableHistoryBets() {
   }
 
   function finalizeBetWinWin(id: string) {
-    handleFinalizeBet(id, true)
+    handleFinalizeBet(id, true, finalizeBetWith as 1 | 2)
     setShowModal(false)
   }
 
