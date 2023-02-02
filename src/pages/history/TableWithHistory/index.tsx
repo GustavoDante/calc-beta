@@ -4,6 +4,7 @@ import { TableContainer } from '../../../styles/global'
 import { format } from 'date-fns'
 import { Balance } from './styles'
 import ptBR from 'date-fns/locale/pt-BR'
+import { ContainerTd } from '../../Home/components/TableHistoryBets/styles'
 
 export function TableWithHistory() {
   const { bets, formatCashField } = useContext(BetsContext)
@@ -55,23 +56,45 @@ export function TableWithHistory() {
               } else {
                 return (
                   <tr key={bet.id}>
-                    <td></td>
-                    <td>R$ {formatCashField(bet.value.toString())}</td>
-                    <td>{bet.multiplier.toFixed(2)} X</td>
-                    <td>R$ {formatCashField(bet.returnBet.toFixed(2))}</td>
-                    {bet.win ? (
-                      <Balance status={'green'}>
-                        <strong>
-                          + R$ {formatCashField(bet.profitBet.toFixed(2))}
-                        </strong>
-                      </Balance>
-                    ) : (
-                      <Balance status={'red'}>
-                        <strong>
-                          - R$ {formatCashField(bet.value.toFixed(2))}
-                        </strong>
-                      </Balance>
-                    )}
+                    <td>
+                      <ContainerTd>
+                        <strong>A</strong>
+                        <strong>B</strong>
+                      </ContainerTd>
+                    </td>
+                    <td>
+                      {/* <strong>Time B</strong> */}
+                      <ContainerTd>
+                        <span>R$ {formatCashField(bet.value.toFixed(2))}</span>
+                        <span>R$ {formatCashField(bet.valueB.toFixed(2))}</span>
+                      </ContainerTd>
+                    </td>
+                    <td>
+                      <ContainerTd>
+                        <span>{bet.multiplier.toFixed(2)} X</span>
+                        <span>{bet.multiplierB.toFixed(2)} X</span>
+                      </ContainerTd>
+                    </td>
+                    <td>
+                      <ContainerTd>
+                        <span>
+                          R$ {formatCashField(bet.returnBet.toFixed(2))}
+                        </span>
+                        <span>
+                          R$ {formatCashField(bet.returnBetB.toFixed(2))}
+                        </span>
+                      </ContainerTd>
+                    </td>
+                    <td>
+                      <ContainerTd>
+                        <span>
+                          R$ {formatCashField(bet.profitBet.toFixed(2))}
+                        </span>
+                        <span>
+                          R$ {formatCashField(bet.profitBetB.toFixed(2))}
+                        </span>
+                      </ContainerTd>
+                    </td>
                     <td>
                       {format(new Date(bet.date), "d 'de' LLLL 'às' HH:mm'h'", {
                         locale: ptBR,

@@ -34,10 +34,16 @@ export function ConfirmationFinalizeModal({
             <span>Tem certeza que deseja excluir esta aposta?</span>
           ) : (
             <span>
-              Tem certeza que deseja finalizar esta aposta com
-              {}
+              Tem certeza que deseja finalizar esta aposta com{' '}
               <strong>
-                {finalizeBetWith === 'win' ? 'vitória' : 'derrota'}
+                {finalizeBetWith === 'win'
+                  ? 'vitória'
+                  : finalizeBetWith === 1
+                  ? 'vitória do time A'
+                  : finalizeBetWith === 2
+                  ? 'vitória do time B'
+                  : 'derrota'}
+                {}
               </strong>
               ?{' '}
             </span>

@@ -31,6 +31,11 @@ export function TableHistoryBets() {
     setShowModal(false)
   }
 
+  function finalizeBetWinWin(id: string) {
+    handleFinalizeBet(id, true)
+    setShowModal(false)
+  }
+
   function handleFinalizeBetWinWin(bet: Bet, whoWin: 1 | 2) {
     setSelectBet(bet)
     setFinalizeBeWith(whoWin)
@@ -126,7 +131,7 @@ export function TableHistoryBets() {
                       {/* <strong>Time B</strong> */}
                       <ContainerTd>
                         <span>R$ {formatCashField(bet.value.toFixed(2))}</span>
-                        <span>R$ {formatCashField(bet.value.toFixed(2))}</span>
+                        <span>R$ {formatCashField(bet.valueB.toFixed(2))}</span>
                       </ContainerTd>
                     </td>
                     <td>
@@ -141,7 +146,7 @@ export function TableHistoryBets() {
                           R$ {formatCashField(bet.returnBet.toFixed(2))}
                         </span>
                         <span>
-                          R$ {formatCashField(bet.multiplierB.toFixed(2))}
+                          R$ {formatCashField(bet.returnBetB.toFixed(2))}
                         </span>
                       </ContainerTd>
                     </td>
@@ -196,6 +201,8 @@ export function TableHistoryBets() {
         handleFinalizeBet={
           finalizeBetWith === 'win'
             ? finalizeBetWithWin
+            : finalizeBetWith === 1 || finalizeBetWith === 2
+            ? finalizeBetWinWin
             : finalizeBetWith === 'lose'
             ? finalizeBetWithLose
             : deleteBet
