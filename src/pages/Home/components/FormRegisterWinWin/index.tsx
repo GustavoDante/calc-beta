@@ -89,6 +89,39 @@ export function FormRegisterWinWin({
     resetInputs()
   }
 
+  function recalculateValueB(teamValue: string) {
+    if (teamAValue !== '' && teamAMultiplier !== '' && teamBMultiplier !== '') {
+      const valueA = parseFloat(
+        teamAValue.replace(/[.]/g, '').replace(/[,]/g, '.'),
+      )
+      console.log(valueA)
+
+      const valueB = parseFloat(
+        valueInputChange(teamValue).replace(/[.]/g, '').replace(/[,]/g, '.'),
+      )
+      console.log(valueB)
+
+      const multiplierA = parseFloat(teamAMultiplier)
+      const multiplierB = parseFloat(teamBMultiplier)
+
+      const returnBetA = valueA * multiplierA
+      const profitBetA = returnBetA - valueA - valueB
+
+      const returnBetB = valueB * multiplierB
+      const profitBetB = returnBetB - valueB - valueA
+
+      setTeamBValue(() => {
+        console.log(teamBValue)
+        return valueInputChange(valueB.toFixed(2))
+      })
+      setTeamAReturnBet(returnBetA)
+      setTeamAProfitBet(profitBetA)
+
+      setTeamBReturnBet(returnBetB)
+      setTeamBProfitBet(profitBetB)
+    }
+  }
+
   useEffect(() => {
     if (teamAValue !== '' && teamAMultiplier !== '' && teamBMultiplier !== '') {
       if (
@@ -104,6 +137,7 @@ export function FormRegisterWinWin({
         setTeamBProfitBet(0)
         return
       }
+      console.log('aqui')
       const valueA = parseFloat(
         teamAValue.replace(/[.]/g, '').replace(/[,]/g, '.'),
       )
@@ -128,7 +162,8 @@ export function FormRegisterWinWin({
     }
   }, [teamAValue, teamAMultiplier, teamBMultiplier, formatCashField])
 
-  const isResumePositive: boolean = teamAProfitBet >= 0 && teamBProfitBet >= 0
+  const isResumeTeamAPositive: boolean = teamAProfitBet >= 0
+  const isResumeTeamBPositive: boolean = teamBProfitBet >= 0
   const isButtonSubmitEnable: boolean = teamAProfitBet > 0 && teamBProfitBet > 0
 
   return (
@@ -189,11 +224,11 @@ export function FormRegisterWinWin({
             </ReturnValueContainer>
             <ReturnValueContainer
               isvalueDefined={!!teamAProfitBet}
-              isValuePositive={isResumePositive}
+              isValuePositive={isResumeTeamAPositive}
             >
               <span>
                 {teamAProfitBet
-                  ? isResumePositive
+                  ? isResumeTeamAPositive
                     ? `${formatCashField(teamAProfitBet.toFixed(2))}`
                     : ` - ${formatCashField(teamAProfitBet.toFixed(2))}`
                   : 'Lucro total'}
@@ -218,7 +253,13 @@ export function FormRegisterWinWin({
               <span>X</span>
             </InputFormContainer>
             <WinWinValueSugestionContainer>
-              <span>{teamBValue || 'Valor Sugerido'}</span>
+              <input
+                type="text"
+                placeholder="Valor Sugerido"
+                autoComplete="off"
+                value={teamBValue}
+                onChange={(event) => recalculateValueB(event.target.value)}
+              />
 
               <span>R$</span>
             </WinWinValueSugestionContainer>
@@ -236,11 +277,11 @@ export function FormRegisterWinWin({
             </ReturnValueContainer>
             <ReturnValueContainer
               isvalueDefined={!!teamBProfitBet}
-              isValuePositive={isResumePositive}
+              isValuePositive={isResumeTeamBPositive}
             >
               <span>
                 {teamBProfitBet
-                  ? isResumePositive
+                  ? isResumeTeamBPositive
                     ? `${formatCashField(teamBProfitBet.toFixed(2))}`
                     : ` - ${formatCashField(teamBProfitBet.toFixed(2))}`
                   : 'Lucro total'}

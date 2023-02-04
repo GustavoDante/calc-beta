@@ -79,7 +79,21 @@ export const WinWinValueSugestionContainer = styled.div`
   padding: 0.7rem;
   margin-bottom: 1rem;
 
-  cursor: not-allowed;
+  > input {
+    width: 10rem;
+    background: transparent;
+    color: ${(props) => props.theme.white};
+    font-weight: 600;
+    border: none;
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    @media (max-width: 768px) {
+      width: 80%;
+    }
+  }
 
   > span {
     color: ${(props) => props.theme['green-400']};
