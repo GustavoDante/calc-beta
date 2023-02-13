@@ -14,9 +14,13 @@ export const SpanWithStatus = styled.span<StatusProps>`
   font-weight: ${(props) => (props.status === 'green' ? 'bold' : 'normal')};
 `
 
-export const TrashContainer = styled.div`
+interface TrashContainerProps {
+  isWinWin: boolean
+}
+
+export const TrashContainer = styled.div<TrashContainerProps>`
   position: absolute;
-  top: 0.4rem;
+  top: ${(props) => (props.isWinWin ? '1.15rem' : '0.4rem')};
   right: 0.7rem;
 
   button {
@@ -26,7 +30,7 @@ export const TrashContainer = styled.div`
     background: transparent;
     border: none;
     width: 1.5rem;
-    height: 3rem;
+    height: 2.5rem;
     border-radius: 5px;
     background: transparent;
     color: ${(props) => props.theme.white};

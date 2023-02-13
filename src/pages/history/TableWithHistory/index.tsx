@@ -66,13 +66,13 @@ export function TableWithHistory() {
                       })}
                     </td>
                     <td>
-                      <TrashContainer>
+                      <TrashContainer isWinWin={false}>
                         <button
                           type="button"
                           onClick={() => handleDeleteBetWithModal(bet)}
                           title="Delete bet"
                         >
-                          <Trash size={20} />
+                          <Trash size={18} />
                         </button>
                       </TrashContainer>
                     </td>
@@ -157,13 +157,13 @@ export function TableWithHistory() {
                       })}
                     </td>
                     <td>
-                      <TrashContainer>
+                      <TrashContainer isWinWin={true}>
                         <button
                           type="button"
                           onClick={() => handleDeleteBetWithModal(bet)}
                           title="Delete bet"
                         >
-                          <Trash size={20} />
+                          <Trash size={18} />
                         </button>
                       </TrashContainer>
                     </td>
