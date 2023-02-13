@@ -13,12 +13,14 @@ export const Container = styled.div`
     display: flex;
     width: 100%;
   }
+
+  gap: 2rem;
 `
 
 export const CardsContainer = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: start;
 
   @media (max-width: 768px) {

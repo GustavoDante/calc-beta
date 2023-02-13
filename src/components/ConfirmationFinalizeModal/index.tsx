@@ -1,6 +1,6 @@
 import Modal from 'react-modal'
 import { Container, modalProps } from './styles'
-import { Bet } from '../../../../../../contexts/BetsContext'
+import { Bet } from '../../contexts/BetsContext'
 
 interface ConfirmationFinalizeModalProps {
   isOpen: boolean

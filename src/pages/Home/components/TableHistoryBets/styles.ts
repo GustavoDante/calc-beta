@@ -57,6 +57,6 @@ export const ContainerActions = styled.div`
     height: 3rem;
     border-radius: 5px;
     background: transparent;
-    color: ${(props) => props.theme['red-700']};
+    color: ${(props) => props.theme.white};
   }
 `
