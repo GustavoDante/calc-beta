@@ -33,18 +33,12 @@ export const GlobalStyle = createGlobalStyle`
 export const TableContainer = styled.div`
   flex: 1;
   overflow: auto;
-  margin-top: 2rem;
   width: 100%;
 
   table {
     width: 100%;
     border-collapse: collapse;
     min-width: 930px;
-
-    th:first-child {
-      width: 5px;
-      padding: 0;
-    }
 
     th {
       background-color: ${(props) => props.theme['gray-600']};
@@ -56,11 +50,15 @@ export const TableContainer = styled.div`
       text-align: center;
 
       &:first-child {
+        width: 5px;
+        padding: 0;
         border-top-left-radius: 8px;
         padding-left: 1.5rem;
       }
 
       &:last-child {
+        width: 5px;
+        padding: 0;
         border-top-right-radius: 8px;
         padding-right: 1.5rem;
       }

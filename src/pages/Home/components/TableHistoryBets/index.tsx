@@ -5,7 +5,7 @@ import { Bet, BetsContext } from '../../../../contexts/BetsContext'
 import { useContext, useState } from 'react'
 import { Trash } from 'phosphor-react'
 import { ContainerTd, TableContainer } from '../../../../styles/global'
-import { ConfirmationFinalizeModal } from './components/ConfirmationFinalizeModal'
+import { ConfirmationFinalizeModal } from '../../../../components/ConfirmationFinalizeModal'
 
 export function TableHistoryBets() {
   const { bets, formatCashField, handleFinalizeBet, handleDeleteBet } =
@@ -72,6 +72,7 @@ export function TableHistoryBets() {
             <th>Lucro</th>
             <th>Data</th>
             <th>Finalizar</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -106,6 +107,8 @@ export function TableHistoryBets() {
                       >
                         Lose
                       </ButtonFinalize>
+                    </td>
+                    <td>
                       <ContainerActions>
                         <button
                           type="button"
@@ -180,13 +183,15 @@ export function TableHistoryBets() {
                       >
                         Time B
                       </ButtonFinalize>
+                    </td>
+                    <td>
                       <ContainerActions>
                         <button
                           type="button"
                           onClick={() => handleDeleteBetWithModal(bet)}
                           title="Delete bet"
                         >
-                          <Trash size={20} />
+                          <Trash size={30} />
                         </button>
                       </ContainerActions>
                     </td>

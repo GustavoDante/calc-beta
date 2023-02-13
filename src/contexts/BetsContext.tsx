@@ -23,6 +23,7 @@ interface BetsContextData {
   valueTotal: number
   handleFinalizeBet: (id: string, win: boolean, whoWin: 1 | 2 | null) => void
   handleDeleteBet: (id: string) => void
+  resetBets: () => void
 }
 
 export const BetsContext = createContext({} as BetsContextData)
@@ -32,8 +33,8 @@ interface BetsProviderProps {
 }
 
 export function BetsProvider({ children }: BetsProviderProps) {
-  const [bets, setBets] = useState<Bet[]>(
-    JSON.parse(localStorage.getItem('bets') ?? '[]'),
+  const [bets, setBets] = useState<Bet[]>(() =>
+    JSON.parse(localStorage.getItem('bets') || '[]'),
   )
   const [FinanceResume, setFinanceResume] = useState(0)
   const [valueTotal, setValueTotal] = useState(0)
@@ -50,6 +51,10 @@ export function BetsProvider({ children }: BetsProviderProps) {
 
   function handleRegisterBet(bet: Bet) {
     setBets([...bets, bet])
+  }
+
+  function resetBets() {
+    setBets([])
   }
 
   function handleFinalizeBet(id: string, win: boolean, whoWin: 1 | 2 | null) {
@@ -97,9 +102,7 @@ export function BetsProvider({ children }: BetsProviderProps) {
       setValueTotal(valueTotal)
     }
 
-    if (bets.length > 0) {
-      localStorage.setItem('bets', JSON.stringify(bets))
-    }
+    localStorage.setItem('bets', JSON.stringify(bets))
 
     calcFinanceResume()
     calcValueTotal()
@@ -115,6 +118,7 @@ export function BetsProvider({ children }: BetsProviderProps) {
         valueTotal,
         handleFinalizeBet,
         handleDeleteBet,
+        resetBets,
       }}
     >
       {children}
