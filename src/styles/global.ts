@@ -28,6 +28,10 @@ export const GlobalStyle = createGlobalStyle`
     button {
         cursor: pointer;
     }
+
+    a {
+        cursor: pointer;
+    }
 `
 
 export const TableContainer = styled.div`

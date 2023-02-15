@@ -5,7 +5,6 @@ import { LayoutContainer } from './styles'
 export function DefaultLayout() {
   return (
     <LayoutContainer>
-      {/* <img src="/src/assets/background-card.png" alt="" /> */}
       <Header />
       <Outlet />
     </LayoutContainer>

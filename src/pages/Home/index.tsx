@@ -3,8 +3,12 @@ import { CardsContainer, Container } from './styles'
 import { FormRegisterBet } from './components/FormRegisterBet'
 import { TableHistoryBets } from './components/TableHistoryBets'
 import { FormRegisterWinWin } from './components/FormRegisterWinWin'
+import { useContext } from 'react'
+import { AuthGoogleContext } from '../../contexts/AuthGoogleContext'
 
 export function Home() {
+  const { user } = useContext(AuthGoogleContext)
+
   function valueInputChange(input: String) {
     let value = input.padStart(4, '0')
 
@@ -31,6 +35,7 @@ export function Home() {
     return multiplier
   }
 
+  console.log(user)
   return (
     <Container>
       <CardsContainer>
