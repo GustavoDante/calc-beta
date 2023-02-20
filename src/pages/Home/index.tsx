@@ -1,4 +1,4 @@
-import { CardsContainer, Container } from './styles'
+import { BackgroundHeader, CardsContainer, Container } from './styles'
 
 import { FormRegisterBet } from './components/FormRegisterBet'
 import { TableHistoryBets } from './components/TableHistoryBets'
@@ -38,6 +38,10 @@ export function Home() {
   console.log(user)
   return (
     <Container>
+      <BackgroundHeader>
+        <img src="/src/assets/header-image.png" alt="" />
+        <h1>Olá, {user?.displayName}.</h1>
+      </BackgroundHeader>
       <CardsContainer>
         <FormRegisterBet
           multiplierInputChange={multiplierInputChange}

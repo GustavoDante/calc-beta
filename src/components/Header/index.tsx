@@ -1,4 +1,4 @@
-import { BackgroundHeader, HeaderContainer } from './styles'
+import { HeaderContainer } from './styles'
 import { Scroll, Coins, SignOut } from 'phosphor-react'
 import logoBeta from '../../assets/logo-beta.svg'
 
@@ -7,7 +7,7 @@ import { AuthGoogleContext } from '../../contexts/AuthGoogleContext'
 import { useContext } from 'react'
 
 export function Header() {
-  const { signOut, user } = useContext(AuthGoogleContext)
+  const { signOut, isSignedIn } = useContext(AuthGoogleContext)
 
   function handleSignOut() {
     signOut()
@@ -17,6 +17,8 @@ export function Header() {
     <HeaderContainer>
       <div>
         <img src={logoBeta} alt="simbolo beta azul" />
+      </div>
+      {isSignedIn ? (
         <nav>
           <NavLink to="/" title="Calculadora">
             <Coins size={28} />
@@ -28,11 +30,9 @@ export function Header() {
             <SignOut size={28} />
           </a>
         </nav>
-      </div>
-      <BackgroundHeader>
-        <img src="/src/assets/header-image.png" alt="" />
-        <h1>Olá, {user?.displayName}.</h1>
-      </BackgroundHeader>
+      ) : (
+        ''
+      )}
     </HeaderContainer>
   )
 }

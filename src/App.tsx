@@ -5,6 +5,9 @@ import { GlobalStyle } from './styles/global'
 import { BetsProvider } from './contexts/BetsContext'
 import { AuthGoogleProvider } from './contexts/AuthGoogleContext'
 import { Router } from './router'
+import { ToastContainer } from 'react-toastify'
+
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
   return (
@@ -16,6 +19,7 @@ function App() {
           </BetsProvider>
         </AuthGoogleProvider>
       </BrowserRouter>
+      <ToastContainer />
       <GlobalStyle />
     </ThemeProvider>
   )

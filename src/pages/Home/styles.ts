@@ -139,3 +139,23 @@ export const Separator = styled.div`
 export const SeparatorBigger = styled(Separator)`
   width: 120%;
 `
+
+export const BackgroundHeader = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+
+  & > img {
+    width: 100%;
+    border-radius: 0.5rem;
+  }
+
+  & > h1 {
+    position: absolute;
+    color: ${(props) => props.theme['gray-100']};
+    line-height: 2;
+    margin-left: 5rem;
+    font-size: 2.5rem;
+  }
+`

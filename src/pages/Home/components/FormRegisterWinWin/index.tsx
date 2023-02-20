@@ -21,9 +21,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 
 const registerWinWinSchema = zod.object({
-  teamAValue: zod.string().min(1, 'Valor mínimo de 1 real'),
-  teamAMultiplier: zod.string().min(1, 'Valor mínimo de 1 real'),
-  teamBMultiplier: zod.string().min(1, 'Valor mínimo de 1 real'),
+  teamAValue: zod.string().min(1, 'Valor mínimo de 1 real, por favor'),
+  teamAMultiplier: zod.string().min(1, 'Valor mínimo de 1 real, por favor'),
+  teamBMultiplier: zod.string().min(1, 'Valor mínimo de 1 real, por favor'),
 })
 
 export type RegisterWinWinData = zod.infer<typeof registerWinWinSchema>

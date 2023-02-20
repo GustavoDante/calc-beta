@@ -14,8 +14,8 @@ import {
 import { TitleCard } from '../../../../styles/global'
 
 const registerBetSchema = zod.object({
-  value: zod.string().min(1, 'Valor mínimo de 1 real'),
-  multiplier: zod.string().min(1, 'Valor mínimo de 1 real'),
+  value: zod.string().min(1, 'Valor mínimo de 1 real, por favor'),
+  multiplier: zod.string().min(1, 'Valor mínimo de 1 real, por favor'),
 })
 
 export type RegisterBetData = zod.infer<typeof registerBetSchema>
