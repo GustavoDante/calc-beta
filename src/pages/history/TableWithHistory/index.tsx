@@ -44,7 +44,7 @@ export function TableWithHistory() {
                 return (
                   <tr key={bet.id}>
                     <td></td>
-                    <td>R$ {formatCashField(bet.value.toString())}</td>
+                    <td>R$ {formatCashField(bet.value.toFixed(2))}</td>
                     <td>{bet.multiplier.toFixed(2)} X</td>
                     <td>R$ {formatCashField(bet.returnBet.toFixed(2))}</td>
                     {bet.win ? (

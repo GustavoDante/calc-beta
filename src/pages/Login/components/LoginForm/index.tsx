@@ -30,8 +30,11 @@ export function LoginForm() {
   } = loginForm
 
   function handleLogin() {
-    signIn(email, password)
-    toast.success('Login realizado com sucesso')
+    try {
+      signIn(email, password)
+    } catch (error) {
+      toast.error('Erro ao realizar login')
+    }
   }
 
   function handleChangeEmail(event: ChangeEvent<HTMLInputElement>) {

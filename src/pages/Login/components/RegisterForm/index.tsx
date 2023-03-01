@@ -47,12 +47,9 @@ export function RegisterForm() {
   function handleRegister() {
     try {
       createUser(name, email, password)
-      toast.success('Cadastro realizado com sucesso')
-      setName('')
-      setEmail('')
-      setPassword('')
-      setConfirmPassword('')
-    } catch (error) {}
+    } catch (error) {
+      toast.error('Erro ao realizar cadastro')
+    }
   }
 
   function handleChangeName(event: ChangeEvent<HTMLInputElement>) {

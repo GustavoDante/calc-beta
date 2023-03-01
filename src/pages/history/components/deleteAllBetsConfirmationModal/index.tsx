@@ -1,6 +1,8 @@
 import Modal from 'react-modal'
-import { modalProps } from './styles'
-import { Container } from '../../../../components/ConfirmationFinalizeModal/styles'
+import {
+  Container,
+  modalProps,
+} from '../../../../components/ConfirmationFinalizeModal/styles'
 
 interface DeleteAllBetsConfirmationModalProps {
   isOpen: boolean

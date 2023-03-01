@@ -1,14 +1,10 @@
-import { BackgroundHeader, CardsContainer, Container } from './styles'
+import { CardsContainer, Container } from './styles'
 
 import { FormRegisterBet } from './components/FormRegisterBet'
 import { TableHistoryBets } from './components/TableHistoryBets'
 import { FormRegisterWinWin } from './components/FormRegisterWinWin'
-import { useContext } from 'react'
-import { AuthGoogleContext } from '../../contexts/AuthGoogleContext'
 
 export function Home() {
-  const { user } = useContext(AuthGoogleContext)
-
   function valueInputChange(input: String) {
     let value = input.padStart(4, '0')
 
@@ -35,13 +31,8 @@ export function Home() {
     return multiplier
   }
 
-  console.log(user)
   return (
     <Container>
-      <BackgroundHeader>
-        <img src="/src/assets/header-image.png" alt="" />
-        <h1>Olá, {user?.displayName}.</h1>
-      </BackgroundHeader>
       <CardsContainer>
         <FormRegisterBet
           multiplierInputChange={multiplierInputChange}
@@ -52,6 +43,7 @@ export function Home() {
           valueInputChange={valueInputChange}
         />
       </CardsContainer>
+
       <TableHistoryBets />
     </Container>
   )

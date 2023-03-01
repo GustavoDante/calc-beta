@@ -4,14 +4,12 @@ import logoBeta from '../../assets/logo-beta.svg'
 
 import { NavLink } from 'react-router-dom'
 import { AuthGoogleContext } from '../../contexts/AuthGoogleContext'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
+import { LogoutConfirmationModal } from './components/logoutConfirmationModal'
 
 export function Header() {
-  const { signOut, isSignedIn } = useContext(AuthGoogleContext)
-
-  function handleSignOut() {
-    signOut()
-  }
+  const { isSignedIn } = useContext(AuthGoogleContext)
+  const [showModal, setShowModal] = useState(false)
 
   return (
     <HeaderContainer>
@@ -26,9 +24,13 @@ export function Header() {
           <NavLink to="/history" title="Histórico">
             <Scroll size={28} />
           </NavLink>
-          <a title="Sair" onClick={handleSignOut}>
+          <a title="Sair" onClick={() => setShowModal(true)}>
             <SignOut size={28} />
           </a>
+          <LogoutConfirmationModal
+            isOpen={showModal}
+            onRequestClose={() => setShowModal(false)}
+          />
         </nav>
       ) : (
         ''

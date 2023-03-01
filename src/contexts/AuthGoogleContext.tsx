@@ -4,17 +4,19 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
   signInWithEmailAndPassword,
+  User,
 } from 'firebase/auth'
 import { ReactNode, createContext, useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { auth } from '../services/firebaseConfig'
-
+import { formatMessageFirebase } from '../helpers/formatMessagesFirebase'
+import { toast } from 'react-toastify'
 interface AuthGoogleContextProps {
   signGoogle: () => void
   signIn: (email: string, password: string) => void
   createUser: (name: string, email: string, password: string) => void
   isSignedIn: boolean
-  user: any
+  user: User | null
   signOut: () => void
 }
 
@@ -25,7 +27,7 @@ interface AuthGoogleProviderProps {
 export const AuthGoogleContext = createContext({} as AuthGoogleContextProps)
 
 export function AuthGoogleProvider({ children }: AuthGoogleProviderProps) {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
 
   const provider = new GoogleAuthProvider()
 
@@ -39,22 +41,11 @@ export function AuthGoogleProvider({ children }: AuthGoogleProviderProps) {
         setUser(user)
         sessionStorage.setItem('@AuthFirebase:token', JSON.stringify(token))
         sessionStorage.setItem('@AuthFirebase:user', JSON.stringify(user))
+
+        toast.success('Login realizado com sucesso')
       })
       .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        const email = error.customData.email
-        const credential = GoogleAuthProvider.credentialFromError(error)
-        console.log(
-          'errorCode: ' +
-            errorCode +
-            ' errorMessage: ' +
-            errorMessage +
-            ' email: ' +
-            email +
-            ' credential: ' +
-            credential,
-        )
+        toast.error(formatMessageFirebase(error.code))
       })
   }
 
@@ -64,27 +55,17 @@ export function AuthGoogleProvider({ children }: AuthGoogleProviderProps) {
         const credential = GoogleAuthProvider.credentialFromResult(result)
         const token = credential?.accessToken
         const user = result.user
+        console.log(credential)
 
         setUser(user)
 
         sessionStorage.setItem('@AuthFirebase:token', JSON.stringify(token))
         sessionStorage.setItem('@AuthFirebase:user', JSON.stringify(user))
+
+        toast.success('Login realizado com sucesso')
       })
       .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        const email = error.customData.email
-        const credential = GoogleAuthProvider.credentialFromError(error)
-        console.log(
-          'errorCode: ' +
-            errorCode +
-            ' errorMessage: ' +
-            errorMessage +
-            ' email: ' +
-            email +
-            ' credential: ' +
-            credential,
-        )
+        toast.error(formatMessageFirebase(error.code))
       })
   }
 
@@ -103,23 +84,11 @@ export function AuthGoogleProvider({ children }: AuthGoogleProviderProps) {
 
         sessionStorage.setItem('@AuthFirebase:token', JSON.stringify(token))
         sessionStorage.setItem('@AuthFirebase:user', JSON.stringify(user))
-        // ...
+
+        toast.success('Cadastro realizado com sucesso')
       })
       .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        const email = error.customData.email
-        const credential = GoogleAuthProvider.credentialFromError(error)
-        console.log(
-          'errorCode: ' +
-            errorCode +
-            ' errorMessage: ' +
-            errorMessage +
-            ' email: ' +
-            email +
-            ' credential: ' +
-            credential,
-        )
+        toast.error(formatMessageFirebase(error.code))
       })
   }
 
@@ -145,8 +114,8 @@ export function AuthGoogleProvider({ children }: AuthGoogleProviderProps) {
         isSignedIn: !!user,
         user,
         signOut,
-        signIn,
         createUser,
+        signIn,
       }}
     >
       {children}
