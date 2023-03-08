@@ -38,10 +38,12 @@ export const ContainerLogin = styled.div`
 
   & > div:last-child {
     align-items: center;
+
     > img {
+      position: absolute;
       width: 45rem;
       height: calc(100vh - 10rem);
-      margin: -3.5rem -3rem -3rem 0;
+      top: 0;
       border-radius: 5rem 0 0 5rem;
     }
   }
@@ -50,6 +52,7 @@ export const ContainerLogin = styled.div`
     text-align: center;
   }
 `
+
 export const ButtonLoginWithGoogle = styled.button`
   display: flex;
   align-items: center;

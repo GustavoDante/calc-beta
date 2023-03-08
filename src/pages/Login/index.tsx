@@ -1,12 +1,12 @@
 import { useContext, useState } from 'react'
 import { AuthGoogleContext } from '../../contexts/AuthGoogleContext'
 import { Navigate } from 'react-router-dom'
-import { ButtonLoginWithGoogle, ContainerLogin } from './styles'
 
 import BackgroundLoginBeta from '../../assets/bets-image.png'
 import logoGoogle from '../../assets/google-icon.svg'
 import { LoginForm } from './components/LoginForm'
 import { RegisterForm } from './components/RegisterForm'
+import { ButtonLoginWithGoogle, ContainerLogin } from './styles'
 
 export function Login() {
   const { signGoogle, isSignedIn } = useContext(AuthGoogleContext)
