@@ -3,7 +3,6 @@ import { ContainerCard } from './styles'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
-import { format } from 'date-fns'
 import { Bet, BetsContext } from '../../../../contexts/BetsContext'
 import {
   FormRegisterBetContainer,
@@ -49,10 +48,9 @@ export function FormRegisterBet({
   }
 
   function handleFormRegisterBet(data: RegisterBetData) {
-    const date = new Date()
+    const date = new Date().toISOString()
 
     const bet: Bet = {
-      id: format(date, 'ddMMyyyyHHmmss' + Math.random()),
       value: parseFloat(data.value.replace(/[.]/g, '').replace(/[,]/g, '.')),
       multiplier: parseFloat(data.multiplier),
       returnBet,

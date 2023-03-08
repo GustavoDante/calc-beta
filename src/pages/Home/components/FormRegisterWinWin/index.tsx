@@ -18,7 +18,6 @@ import {
 import { Bet, BetsContext } from '../../../../contexts/BetsContext'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { format } from 'date-fns'
 
 const registerWinWinSchema = zod.object({
   teamAValue: zod.string().min(1, 'Valor mínimo de 1 real, por favor'),
@@ -37,17 +36,17 @@ export function FormRegisterWinWin({
   valueInputChange,
   multiplierInputChange,
 }: FormRegisterWinWinProps) {
-  const { handleRegisterBet, formatCashField } = useContext(BetsContext) // eslint-disable-line
+  const { handleRegisterBet, formatCashField } = useContext(BetsContext)
 
   const [teamAMultiplier, setTeamAMultiplier] = useState('')
   const [teamAValue, setTeamAValue] = useState('')
-  const [teamAReturnBet, setTeamAReturnBet] = useState(0) // eslint-disable-line
-  const [teamAProfitBet, setTeamAProfitBet] = useState(0)  // eslint-disable-line
+  const [teamAReturnBet, setTeamAReturnBet] = useState(0)
+  const [teamAProfitBet, setTeamAProfitBet] = useState(0)
 
   const [teamBMultiplier, setTeamBMultiplier] = useState('')
   const [teamBValue, setTeamBValue] = useState('')
-  const [teamBReturnBet, setTeamBReturnBet] = useState(0) // eslint-disable-line
-  const [teamBProfitBet, setTeamBProfitBet] = useState(0) // eslint-disable-line
+  const [teamBReturnBet, setTeamBReturnBet] = useState(0)
+  const [teamBProfitBet, setTeamBProfitBet] = useState(0)
 
   const newRegisterWinWinForm = useForm<RegisterWinWinData>({
     resolver: zodResolver(registerWinWinSchema),
@@ -67,10 +66,9 @@ export function FormRegisterWinWin({
   }
 
   function handleFormRegisterWinWin(data: RegisterWinWinData) {
-    const date = new Date()
+    const date = new Date().toISOString()
 
     const bet: Bet = {
-      id: format(date, 'ddMMyyyyHHmmss' + Math.random()),
       value: parseFloat(teamAValue.replace(/[.]/g, '').replace(/[,]/g, '.')),
       multiplier: parseFloat(teamAMultiplier),
       returnBet: teamAReturnBet,
@@ -94,12 +92,10 @@ export function FormRegisterWinWin({
       const valueA = parseFloat(
         teamAValue.replace(/[.]/g, '').replace(/[,]/g, '.'),
       )
-      console.log(valueA)
 
       const valueB = parseFloat(
         valueInputChange(teamValue).replace(/[.]/g, '').replace(/[,]/g, '.'),
       )
-      console.log(valueB)
 
       const multiplierA = parseFloat(teamAMultiplier)
       const multiplierB = parseFloat(teamBMultiplier)
@@ -111,7 +107,6 @@ export function FormRegisterWinWin({
       const profitBetB = returnBetB - valueB - valueA
 
       setTeamBValue(() => {
-        console.log(teamBValue)
         return valueInputChange(valueB.toFixed(2))
       })
       setTeamAReturnBet(returnBetA)
@@ -137,7 +132,6 @@ export function FormRegisterWinWin({
         setTeamBProfitBet(0)
         return
       }
-      console.log('aqui')
       const valueA = parseFloat(
         teamAValue.replace(/[.]/g, '').replace(/[,]/g, '.'),
       )

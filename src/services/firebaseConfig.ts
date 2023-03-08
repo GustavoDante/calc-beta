@@ -1,17 +1,21 @@
 import { getAnalytics } from 'firebase/analytics'
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCT6ZV0VB5n34ifsQD_YgRGpdVkeg1-9fg',
-  authDomain: 'calcbet-51c93.firebaseapp.com',
-  projectId: 'calcbet-51c93',
-  storageBucket: 'calcbet-51c93.appspot.com',
-  messagingSenderId: '695689407525',
-  appId: '1:695689407525:web:7cb3d8c48bc4c5549f63cc',
-  measurementId: 'G-7E3ZDDR18F',
+  apiKey: import.meta.env.VITE_REACT_APP_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env
+    .VITE_REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_REACT_APP_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_REACT_APP_FIREBASE_MEASUREMENT_ID,
 }
 
 export const app = initializeApp(firebaseConfig)
 export const analytics = getAnalytics(app)
 export const auth = getAuth(app)
+
+export const db = getFirestore(app)

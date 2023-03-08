@@ -1,7 +1,16 @@
-import { ReactNode, createContext, useEffect, useState } from 'react'
+import { addDoc, collection, deleteDoc, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore' //eslint-disable-line
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import { db } from '../services/firebaseConfig'
+import { AuthGoogleContext } from './AuthGoogleContext'
 
 export interface Bet {
-  id: string
+  id?: string
   value: number
   multiplier: number
   returnBet: number
@@ -13,7 +22,7 @@ export interface Bet {
   multiplierB: number
   returnBetB: number
   profitBetB: number
-  date: Date
+  date: string
 }
 interface BetsContextData {
   bets: Bet[]
@@ -33,11 +42,18 @@ interface BetsProviderProps {
 }
 
 export function BetsProvider({ children }: BetsProviderProps) {
-  const [bets, setBets] = useState<Bet[]>(() =>
-    JSON.parse(localStorage.getItem('bets') || '[]'),
-  )
+  const { user } = useContext(AuthGoogleContext)
+  const [bets, setBets] = useState<Bet[]>([])
   const [FinanceResume, setFinanceResume] = useState(0)
   const [valueTotal, setValueTotal] = useState(0)
+
+  const currentUser = user?.email || ''
+
+  const colletionRef = currentUser
+    ? collection(db, 'users', currentUser, 'bets')
+    : null
+
+  //   const docRef = doc(db, 'users', currentUser, 'bets', 'smB02IqJVaF25mjWRa7r')
 
   function formatCashField(value: string) {
     let retorno = value
@@ -49,15 +65,41 @@ export function BetsProvider({ children }: BetsProviderProps) {
     return retorno
   }
 
-  function handleRegisterBet(bet: Bet) {
-    setBets([...bets, bet])
+  async function handleRegisterBet(bet: Bet) {
+    const newBetRef = await addDoc(colletionRef!, bet)
+
+    setBets((bets) => {
+      return [...bets, { ...bet, id: newBetRef.id }]
+    })
+
+    console.log('success', newBetRef.id)
   }
 
-  function resetBets() {
-    setBets([])
+  async function resetBets() {
+    try {
+      const docSnap = await getDocs(colletionRef!)
+      docSnap.docs.map(async (currentDoc) => {
+        const docRef = doc(db, 'users', currentUser, 'bets', currentDoc.id)
+        await deleteDoc(docRef)
+      })
+      setBets([])
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  function handleFinalizeBet(id: string, win: boolean, whoWin: 1 | 2 | null) {
+  async function handleFinalizeBet(
+    id: string,
+    win: boolean,
+    whoWin: 1 | 2 | null,
+  ) {
+    const docRef = doc(db, 'users', currentUser, 'bets', id)
+
+    await updateDoc(docRef, {
+      win,
+      whoWin,
+    })
+
     setBets((bets) => {
       return bets.map((bet) => {
         if (bet.id === id) {
@@ -67,43 +109,73 @@ export function BetsProvider({ children }: BetsProviderProps) {
         return bet
       })
     })
+
+    getData()
   }
 
-  function handleDeleteBet(id: string) {
+  async function handleDeleteBet(id: string) {
+    const docRef = doc(db, 'users', currentUser, 'bets', id)
+    await deleteDoc(docRef)
     setBets((bets) => bets.filter((bet) => bet.id !== id))
   }
 
+  async function getData() {
+    try {
+      if (currentUser) {
+        const docSnap = await getDocs(colletionRef!)
+        const data = docSnap.docs.map((doc) => {
+          return {
+            ...doc.data(),
+            id: doc.id,
+          }
+        })
+        setBets(data as Bet[])
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  function calcFinanceResume() {
+    const valueOfWins = bets
+      .filter((bet) => bet.win === true)
+      .filter((bet) => bet.winWin === false)
+      .reduce((total, bet) => total + bet.profitBet, 0)
+
+    const valueOfWinsWins = bets
+      .filter((bet) => bet.win === true)
+      .filter((bet) => bet.winWin === true)
+      .reduce(
+        (total, bet) =>
+          total + (bet.whoWin === 1 ? bet.profitBet : bet.profitBetB),
+        0,
+      )
+
+    const valueOfLosses = bets
+      .filter((bet) => bet.win === false)
+      .reduce((total, value) => total + value.value, 0)
+
+    setFinanceResume(valueOfWins + valueOfWinsWins - valueOfLosses)
+  }
+
+  function calcValueTotal() {
+    const valueTotalOfSimpleBet = bets.reduce(
+      (total, value) => total + value.value,
+      0,
+    )
+
+    const valueTotalOfWinsWins = bets
+      .filter((bet) => bet.winWin === true)
+      .reduce((total, bet) => total + bet.valueB, 0)
+
+    setValueTotal(valueTotalOfSimpleBet + valueTotalOfWinsWins)
+  }
+
   useEffect(() => {
-    function calcFinanceResume() {
-      const valueOfWins = bets
-        .filter((bet) => bet.win === true)
-        .filter((bet) => bet.winWin === false)
-        .reduce((total, bet) => total + bet.profitBet, 0)
+    getData()
+  }, [currentUser])
 
-      const valueOfWinsWins = bets
-        .filter((bet) => bet.win === true)
-        .filter((bet) => bet.winWin === true)
-        .reduce(
-          (total, bet) =>
-            total + (bet.whoWin === 1 ? bet.profitBet : bet.profitBetB),
-          0,
-        )
-
-      const valueOfLosses = bets
-        .filter((bet) => bet.win === false)
-        .reduce((total, value) => total + value.value, 0)
-
-      setFinanceResume(valueOfWins + valueOfWinsWins - valueOfLosses)
-    }
-
-    function calcValueTotal() {
-      const valueTotal = bets.reduce((total, value) => total + value.value, 0)
-
-      setValueTotal(valueTotal)
-    }
-
-    localStorage.setItem('bets', JSON.stringify(bets))
-
+  useEffect(() => {
     calcFinanceResume()
     calcValueTotal()
   }, [bets])
