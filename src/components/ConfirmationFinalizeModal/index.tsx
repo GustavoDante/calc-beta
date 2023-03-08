@@ -50,7 +50,7 @@ export function ConfirmationFinalizeModal({
           )}
         </div>
         <footer>
-          <button onClick={() => handleFinalizeBet(bet.id)}>Confirmar</button>
+          <button onClick={() => handleFinalizeBet(bet.id!)}>Confirmar</button>
           <button onClick={onRequestClose}>Cancelar</button>
         </footer>
       </Container>
