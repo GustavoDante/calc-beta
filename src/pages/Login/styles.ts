@@ -13,7 +13,7 @@ export const ContainerLogin = styled.div`
     gap: 1rem;
     justify-content: center;
     text-align: left;
-    margin-top: 10rem;
+    margin-top: 1rem;
 
     & > div:first-child {
       display: flex;
@@ -42,14 +42,23 @@ export const ContainerLogin = styled.div`
     > img {
       position: absolute;
       width: 45rem;
-      height: calc(100vh - 10rem);
+      min-height: calc(100vh - 10rem);
+      max-height: 100%;
       top: 0;
       border-radius: 5rem 0 0 5rem;
+
+      @media (max-width: 768px) {
+        display: none;
+      }
     }
   }
 
   span {
     text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
   }
 `
 
