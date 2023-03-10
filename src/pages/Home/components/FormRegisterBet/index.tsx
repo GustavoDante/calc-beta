@@ -48,7 +48,7 @@ export function FormRegisterBet({
   }
 
   function handleFormRegisterBet(data: RegisterBetData) {
-    const date = new Date().toISOString()
+    const date = new Date().toUTCString()
 
     const bet: Bet = {
       value: parseFloat(data.value.replace(/[.]/g, '').replace(/[,]/g, '.')),

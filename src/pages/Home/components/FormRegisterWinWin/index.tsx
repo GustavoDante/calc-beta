@@ -66,7 +66,7 @@ export function FormRegisterWinWin({
   }
 
   function handleFormRegisterWinWin(data: RegisterWinWinData) {
-    const date = new Date().toISOString()
+    const date = new Date().toUTCString()
 
     const bet: Bet = {
       value: parseFloat(teamAValue.replace(/[.]/g, '').replace(/[,]/g, '.')),
