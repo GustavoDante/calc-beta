@@ -16,32 +16,31 @@ import FilterIcon from '../../assets/filter.svg'
 import FilterSlash from '../../assets/filter-slash.svg'
 
 export function History() {
-  const { resetBets } = useContext(BetsContext)
+  const { resetBets, setFilterDate, filterDate } = useContext(BetsContext)
   const [showModal, setShowModal] = useState<boolean>(false)
-  const [date, setDate] = useState<string>('')
 
   function handleDeleteAllBets() {
     setShowModal(true)
   }
-  //   console.log(new Date(date))
+
   return (
     <Container>
       <ResumeCard />
       <ActionsContainer>
-        <FilterContainer isFiltered={!!date}>
+        <FilterContainer isFiltered={!!filterDate}>
           <div>
             <img src={FilterIcon} alt="" />
             <FilterDate
               type="date"
-              value={date}
-              min="2005-01-01"
+              value={filterDate}
+              min="2023-01-01"
               max={new Date().toISOString().split('T')[0]}
               icon={CalendarIcon}
-              onChange={(e) => setDate(e.target.value)}
+              onChange={(e) => setFilterDate(e.target.value)}
             ></FilterDate>
           </div>
 
-          <button type="button" onClick={() => setDate('')}>
+          <button type="button" onClick={() => setFilterDate('')}>
             <img src={FilterSlash} alt="" />
           </button>
         </FilterContainer>
@@ -51,7 +50,7 @@ export function History() {
         </DeleteAllBets>
       </ActionsContainer>
 
-      <TableWithHistory filterDate={date} />
+      <TableWithHistory />
       <DeleteAllBetsConfirmationModal
         deleteAllBets={resetBets}
         isOpen={showModal}

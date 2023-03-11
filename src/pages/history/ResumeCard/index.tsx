@@ -2,9 +2,10 @@ import { useContext } from 'react'
 import { Container, Card, CardValuesContainer } from './styles'
 import { BetsContext } from '../../../contexts/BetsContext'
 import { TitleCard } from '../../../styles/global'
+import { format } from 'date-fns'
 
 export function ResumeCard() {
-  const { bets, formatCashField, FinanceResume, valueTotal } =
+  const { bets, formatCashField, FinanceResume, valueTotal, filterDate } =
     useContext(BetsContext)
 
   return (
@@ -22,7 +23,17 @@ export function ResumeCard() {
         <CardValuesContainer>
           <h5>Total de WinWins</h5>
           <div>
-            <span>{bets.filter((bet) => bet.winWin === true).length}</span>
+            <span>
+              {
+                bets
+                  .filter((bet) => bet.winWin === true)
+                  .filter((bet) =>
+                    filterDate
+                      ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+                      : bet,
+                  ).length
+              }
+            </span>
           </div>
         </CardValuesContainer>
         <CardValuesContainer>
@@ -30,8 +41,13 @@ export function ResumeCard() {
           <div>
             <span>
               {
-                bets.filter((bet) => bet.win === true && bet.winWin === false)
-                  .length
+                bets
+                  .filter((bet) => bet.win === true && bet.winWin === false)
+                  .filter((bet) =>
+                    filterDate
+                      ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+                      : bet,
+                  ).length
               }
             </span>
           </div>
@@ -39,7 +55,17 @@ export function ResumeCard() {
         <CardValuesContainer>
           <h5>Total de Loses</h5>
           <div>
-            <span>{bets.filter((bet) => bet.win === false).length}</span>
+            <span>
+              {
+                bets
+                  .filter((bet) => bet.win === false)
+                  .filter((bet) =>
+                    filterDate
+                      ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+                      : bet,
+                  ).length
+              }
+            </span>
           </div>
         </CardValuesContainer>
         <CardValuesContainer>

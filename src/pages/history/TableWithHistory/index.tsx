@@ -7,11 +7,9 @@ import ptBR from 'date-fns/locale/pt-BR'
 import { Trash } from 'phosphor-react'
 import { ConfirmationFinalizeModal } from '../../../components/ConfirmationFinalizeModal'
 
-interface TableWithHistoryProps {
-  filterDate: string
-}
-export function TableWithHistory({ filterDate }: TableWithHistoryProps) {
-  const { bets, formatCashField, handleDeleteBet } = useContext(BetsContext)
+export function TableWithHistory() {
+  const { bets, formatCashField, handleDeleteBet, filterDate } =
+    useContext(BetsContext)
   const [selectBet, setSelectBet] = useState<Bet>({} as Bet)
   const [showModal, setShowModal] = useState(false)
 
@@ -42,13 +40,9 @@ export function TableWithHistory({ filterDate }: TableWithHistoryProps) {
         <tbody>
           {bets
             .filter((bet) => bet.win !== null)
-            .map((bet) => {
-              //   console.log(new Date(filterDate).toISOString().split('T')[0])
-              return bet
-            })
             .filter((bet) =>
               filterDate
-                ? new Date(bet.date).toISOString().split('T')[0] === filterDate
+                ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
                 : bet,
             )
             .map((bet) => {

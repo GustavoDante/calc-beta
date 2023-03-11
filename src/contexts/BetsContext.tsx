@@ -8,6 +8,7 @@ import {
 } from 'react'
 import { db } from '../services/firebaseConfig'
 import { AuthGoogleContext } from './AuthGoogleContext'
+import { format } from 'date-fns'
 
 export interface Bet {
   id?: string
@@ -30,6 +31,8 @@ interface BetsContextData {
   handleRegisterBet: (bet: Bet) => void
   FinanceResume: number
   valueTotal: number
+  filterDate: string
+  setFilterDate: (date: string) => void
   handleFinalizeBet: (id: string, win: boolean, whoWin: 1 | 2 | null) => void
   handleDeleteBet: (id: string) => void
   resetBets: () => void
@@ -44,6 +47,7 @@ interface BetsProviderProps {
 export function BetsProvider({ children }: BetsProviderProps) {
   const { user } = useContext(AuthGoogleContext)
   const [bets, setBets] = useState<Bet[]>([])
+  const [filterDate, setFilterDate] = useState('')
   const [FinanceResume, setFinanceResume] = useState(0)
   const [valueTotal, setValueTotal] = useState(0)
 
@@ -140,11 +144,21 @@ export function BetsProvider({ children }: BetsProviderProps) {
     const valueOfWins = bets
       .filter((bet) => bet.win === true)
       .filter((bet) => bet.winWin === false)
+      .filter((bet) =>
+        filterDate
+          ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+          : bet,
+      )
       .reduce((total, bet) => total + bet.profitBet, 0)
 
     const valueOfWinsWins = bets
       .filter((bet) => bet.win === true)
       .filter((bet) => bet.winWin === true)
+      .filter((bet) =>
+        filterDate
+          ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+          : bet,
+      )
       .reduce(
         (total, bet) =>
           total + (bet.whoWin === 1 ? bet.profitBet : bet.profitBetB),
@@ -153,18 +167,31 @@ export function BetsProvider({ children }: BetsProviderProps) {
 
     const valueOfLosses = bets
       .filter((bet) => bet.win === false)
+      .filter((bet) =>
+        filterDate
+          ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+          : bet,
+      )
       .reduce((total, value) => total + value.value, 0)
 
     setFinanceResume(valueOfWins + valueOfWinsWins - valueOfLosses)
   }
 
   function calcValueTotal() {
-    const valueTotalOfSimpleBet = bets.reduce(
-      (total, value) => total + value.value,
-      0,
-    )
+    const valueTotalOfSimpleBet = bets
+      .filter((bet) =>
+        filterDate
+          ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+          : bet,
+      )
+      .reduce((total, value) => total + value.value, 0)
 
     const valueTotalOfWinsWins = bets
+      .filter((bet) =>
+        filterDate
+          ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+          : bet,
+      )
       .filter((bet) => bet.winWin === true)
       .reduce((total, bet) => total + bet.valueB, 0)
 
@@ -178,7 +205,7 @@ export function BetsProvider({ children }: BetsProviderProps) {
   useEffect(() => {
     calcFinanceResume()
     calcValueTotal()
-  }, [bets])
+  }, [bets, filterDate])
 
   return (
     <BetsContext.Provider
@@ -191,6 +218,8 @@ export function BetsProvider({ children }: BetsProviderProps) {
         handleFinalizeBet,
         handleDeleteBet,
         resetBets,
+        filterDate,
+        setFilterDate,
       }}
     >
       {children}
