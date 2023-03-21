@@ -38,6 +38,11 @@ export function Home() {
   return (
     <Container>
       <CardsContainer>
+        <FormRegisterWinWin
+          multiplierInputChange={multiplierInputChange}
+          valueInputChange={valueInputChange}
+          functionType="balance"
+        />
         <FormRegisterBet
           multiplierInputChange={multiplierInputChange}
           valueInputChange={valueInputChange}
@@ -45,6 +50,7 @@ export function Home() {
         <FormRegisterWinWin
           multiplierInputChange={multiplierInputChange}
           valueInputChange={valueInputChange}
+          functionType="win-win"
         />
       </CardsContainer>
 

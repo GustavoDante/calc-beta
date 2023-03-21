@@ -16,6 +16,9 @@ export const ContainerCard = styled.div`
 
   padding: 2rem 1rem;
   border-radius: 26px;
+
+  box-shadow: 0 0 0.5rem 0.5rem ${(props) => props.theme['blue-1000']};
+
   > label {
     display: flex;
     flex-direction: column;

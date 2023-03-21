@@ -23,7 +23,7 @@ export const CardsContainer = styled.div`
   justify-content: space-between;
   align-items: start;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1320px) {
     flex-direction: column;
     justify-content: center;
     align-items: center;

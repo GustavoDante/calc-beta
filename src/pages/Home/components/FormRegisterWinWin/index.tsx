@@ -30,11 +30,13 @@ export type RegisterWinWinData = zod.infer<typeof registerWinWinSchema>
 interface FormRegisterWinWinProps {
   valueInputChange: (input: String) => string
   multiplierInputChange: (input: String) => string
+  functionType: 'balance' | 'win-win'
 }
 
 export function FormRegisterWinWin({
   valueInputChange,
   multiplierInputChange,
+  functionType,
 }: FormRegisterWinWinProps) {
   const { handleRegisterBet, formatCashField } = useContext(BetsContext)
 
@@ -138,27 +140,45 @@ export function FormRegisterWinWin({
       const multiplierA = parseFloat(teamAMultiplier)
       const multiplierB = parseFloat(teamBMultiplier)
 
-      const valueB = (valueA * multiplierA) / multiplierB
+      if (functionType === 'balance') {
+        const valueB = valueA / (multiplierB - 1)
 
-      const returnBetA = valueA * multiplierA
-      const profitBetA = returnBetA - valueA - valueB
+        const returnBetA = valueA * multiplierA
+        const profitBetA = returnBetA - valueA - valueB
 
-      const returnBetB = valueB * multiplierB
-      const profitBetB = returnBetB - valueB - valueA
+        const returnBetB = valueB * multiplierB
+        const profitBetB = returnBetB - valueB - valueA
 
-      setTeamBValue(formatCashField(valueB.toFixed(2)))
+        setTeamBValue(formatCashField(valueB.toFixed(2)))
 
-      setTeamAReturnBet(returnBetA)
-      setTeamAProfitBet(profitBetA)
+        setTeamAReturnBet(returnBetA)
+        setTeamAProfitBet(profitBetA)
 
-      setTeamBReturnBet(returnBetB)
-      setTeamBProfitBet(profitBetB)
+        setTeamBReturnBet(returnBetB)
+        setTeamBProfitBet(profitBetB)
+      } else {
+        const valueB = (valueA * multiplierA) / multiplierB
+
+        const returnBetA = valueA * multiplierA
+        const profitBetA = returnBetA - valueA - valueB
+
+        const returnBetB = valueB * multiplierB
+        const profitBetB = returnBetB - valueB - valueA
+
+        setTeamBValue(formatCashField(valueB.toFixed(2)))
+
+        setTeamAReturnBet(returnBetA)
+        setTeamAProfitBet(profitBetA)
+
+        setTeamBReturnBet(returnBetB)
+        setTeamBProfitBet(profitBetB)
+      }
     }
   }, [teamAValue, teamAMultiplier, teamBMultiplier, formatCashField])
 
   const isResumeTeamAPositive: boolean = teamAProfitBet >= 0
   const isResumeTeamBPositive: boolean = teamBProfitBet >= 0
-  const isButtonSubmitEnable: boolean = teamAProfitBet > 0 && teamBProfitBet > 0
+  const isButtonSubmitEnable: boolean = teamAProfitBet > 0 || teamBProfitBet > 0
 
   return (
     <FormRegisterBetContainer onSubmit={handleSubmit(handleFormRegisterWinWin)}>
@@ -168,7 +188,7 @@ export function FormRegisterWinWin({
             <h3>Time A</h3>
           </TeamTitle>
           <TitleCard>
-            <span>win/win</span>
+            <span>{functionType === 'win-win' ? 'Win/Win' : 'Equilibrar'}</span>
           </TitleCard>
 
           <TeamTitle>

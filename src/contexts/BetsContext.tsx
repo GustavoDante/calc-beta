@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore' //eslint-disable-line
+import { addDoc, collection, deleteDoc, doc, getDocs, limit, orderBy, query, setDoc, startAfter, updateDoc } from 'firebase/firestore' //eslint-disable-line
 import {
   ReactNode,
   createContext,
@@ -57,8 +57,6 @@ export function BetsProvider({ children }: BetsProviderProps) {
     ? collection(db, 'users', currentUser, 'bets')
     : null
 
-  //   const docRef = doc(db, 'users', currentUser, 'bets', 'smB02IqJVaF25mjWRa7r')
-
   function formatCashField(value: string) {
     let retorno = value
 
@@ -75,8 +73,6 @@ export function BetsProvider({ children }: BetsProviderProps) {
     setBets((bets) => {
       return [...bets, { ...bet, id: newBetRef.id }]
     })
-
-    console.log('success', newBetRef.id)
   }
 
   async function resetBets() {
@@ -126,8 +122,17 @@ export function BetsProvider({ children }: BetsProviderProps) {
   async function getData() {
     try {
       if (currentUser) {
-        const docSnap = await getDocs(colletionRef!)
-        const data = docSnap.docs.map((doc) => {
+        const queryWithPagination = query(
+          colletionRef!,
+          orderBy('date', 'desc'),
+          //   startAfter(docBets.docs[docBets.docs.length]),
+          limit(10),
+        )
+
+        const dataWithPagination = await getDocs(queryWithPagination)
+
+        console.log(dataWithPagination)
+        const data = dataWithPagination.docs.map((doc) => {
           return {
             ...doc.data(),
             id: doc.id,

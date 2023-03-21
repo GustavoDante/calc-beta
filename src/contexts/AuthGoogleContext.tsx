@@ -55,7 +55,6 @@ export function AuthGoogleProvider({ children }: AuthGoogleProviderProps) {
         const credential = GoogleAuthProvider.credentialFromResult(result)
         const token = credential?.accessToken
         const user = result.user
-        console.log(credential)
 
         setUser(user)
 
@@ -75,7 +74,6 @@ export function AuthGoogleProvider({ children }: AuthGoogleProviderProps) {
         await updateProfile(result.user, {
           displayName: name,
         })
-        console.log(result)
         const credential = GoogleAuthProvider.credentialFromResult(result)
         const token = credential?.accessToken
         const user = result.user

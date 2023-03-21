@@ -38,6 +38,7 @@ export const TableContainer = styled.div`
   flex: 1;
   overflow: auto;
   width: 100%;
+  box-shadow: 0 0 0.5rem 0.5rem ${(props) => props.theme['gray-700']};
 
   table {
     width: 100%;
@@ -75,8 +76,6 @@ export const TableContainer = styled.div`
       font-size: 0.875rem;
       line-height: 1.6;
       text-align: center;
-      /* display: flex; */
-      /* flex-direction: column; */
 
       &:first-child {
         padding-left: 1.5rem;
