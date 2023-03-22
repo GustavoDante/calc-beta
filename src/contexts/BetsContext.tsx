@@ -125,13 +125,10 @@ export function BetsProvider({ children }: BetsProviderProps) {
         const queryWithPagination = query(
           colletionRef!,
           orderBy('date', 'desc'),
-          //   startAfter(docBets.docs[docBets.docs.length]),
-          limit(10),
         )
 
         const dataWithPagination = await getDocs(queryWithPagination)
 
-        console.log(dataWithPagination)
         const data = dataWithPagination.docs.map((doc) => {
           return {
             ...doc.data(),

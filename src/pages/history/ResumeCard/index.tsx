@@ -46,7 +46,6 @@ export function ResumeCard() {
 
   const percentageB = totalWins > 0 ? 100 - percentageA : 0
 
-  //   console.log(percentageA, percentageB, totalWins, totalBets, totalBets ?? 1)
   return (
     <Container>
       <Card>

@@ -42,13 +42,13 @@ export function FormRegisterWinWin({
 
   const [teamAMultiplier, setTeamAMultiplier] = useState('')
   const [teamAValue, setTeamAValue] = useState('')
-  const [teamAReturnBet, setTeamAReturnBet] = useState(0)
-  const [teamAProfitBet, setTeamAProfitBet] = useState(0)
+  const [teamAReturnBet, setTeamAReturnBet] = useState<number>(0)
+  const [teamAProfitBet, setTeamAProfitBet] = useState<number>(-1)
 
   const [teamBMultiplier, setTeamBMultiplier] = useState('')
   const [teamBValue, setTeamBValue] = useState('')
-  const [teamBReturnBet, setTeamBReturnBet] = useState(0)
-  const [teamBProfitBet, setTeamBProfitBet] = useState(0)
+  const [teamBReturnBet, setTeamBReturnBet] = useState<number>(0)
+  const [teamBProfitBet, setTeamBProfitBet] = useState<number>(-1)
 
   const newRegisterWinWinForm = useForm<RegisterWinWinData>({
     resolver: zodResolver(registerWinWinSchema),
@@ -62,9 +62,9 @@ export function FormRegisterWinWin({
     setTeamBMultiplier('')
     setTeamBValue('')
     setTeamAReturnBet(0)
-    setTeamAProfitBet(0)
+    setTeamAProfitBet(-1)
     setTeamBReturnBet(0)
-    setTeamBProfitBet(0)
+    setTeamBProfitBet(-1)
   }
 
   function handleFormRegisterWinWin(data: RegisterWinWinData) {
@@ -128,10 +128,10 @@ export function FormRegisterWinWin({
         parseFloat(teamBMultiplier) <= 1.0
       ) {
         setTeamAReturnBet(0)
-        setTeamAProfitBet(0)
+        setTeamAProfitBet(-1)
 
         setTeamBReturnBet(0)
-        setTeamBProfitBet(0)
+        setTeamBProfitBet(-1)
         return
       }
       const valueA = parseFloat(
@@ -237,11 +237,11 @@ export function FormRegisterWinWin({
               <span>R$</span>
             </ReturnValueContainer>
             <ReturnValueContainer
-              isvalueDefined={!!teamAProfitBet}
+              isvalueDefined={teamAProfitBet >= 0}
               isValuePositive={isResumeTeamAPositive}
             >
               <span>
-                {teamAProfitBet
+                {teamAProfitBet >= 0
                   ? isResumeTeamAPositive
                     ? `${formatCashField(teamAProfitBet.toFixed(2))}`
                     : ` - ${formatCashField(teamAProfitBet.toFixed(2))}`
@@ -290,11 +290,11 @@ export function FormRegisterWinWin({
               <span>R$</span>
             </ReturnValueContainer>
             <ReturnValueContainer
-              isvalueDefined={!!teamBProfitBet}
+              isvalueDefined={teamBProfitBet >= 0}
               isValuePositive={isResumeTeamBPositive}
             >
               <span>
-                {teamBProfitBet
+                {teamBProfitBet >= 0
                   ? isResumeTeamBPositive
                     ? `${formatCashField(teamBProfitBet.toFixed(2))}`
                     : ` - ${formatCashField(teamBProfitBet.toFixed(2))}`
