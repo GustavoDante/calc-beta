@@ -241,6 +241,7 @@ export function TableWithHistory() {
             for (let i = 1; i <= numberOfPages; i++) {
               pages.push(
                 <PaginationButton
+                  key={i}
                   type="button"
                   onClick={() => setCurrentPage(i)}
                   isCurrentPage={i === currentPage}
