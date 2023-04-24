@@ -57,14 +57,14 @@ export const TableContainer = styled.div`
       &:first-child {
         width: 5px;
         padding: 0;
-        border-top-left-radius: 8px;
+        border-top-left-radius: 4px;
         padding-left: 1.5rem;
       }
 
       &:last-child {
         width: 5px;
         padding: 0;
-        border-top-right-radius: 8px;
+        border-top-right-radius: 4px;
         padding-right: 1.5rem;
       }
     }

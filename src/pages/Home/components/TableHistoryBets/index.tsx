@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { compareDesc, format } from 'date-fns'
 import { ButtonFinalize, ContainerActions } from './styles'
 import { ptBR } from 'date-fns/locale'
 import { Bet, BetsContext } from '../../../../contexts/BetsContext'
@@ -78,6 +78,9 @@ export function TableHistoryBets() {
         <tbody>
           {bets
             .filter((bet) => bet.win === null)
+            .sort((a: Bet, b: Bet) => {
+              return compareDesc(new Date(a.date), new Date(b.date))
+            })
             .map((bet) => {
               if (bet.winWin === false) {
                 return (

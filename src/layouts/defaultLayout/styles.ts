@@ -4,7 +4,7 @@ export const LayoutContainer = styled.div`
   position: relative;
   max-width: 90rem;
   min-height: calc(100vh - 10rem);
-  margin: 5rem auto;
+  margin: 5rem auto 0;
   padding: 2.5rem;
   overflow: hidden;
 

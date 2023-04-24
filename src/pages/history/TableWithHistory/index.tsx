@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { Bet, BetsContext } from '../../../contexts/BetsContext'
 import { ContainerTd, TableContainer } from '../../../styles/global'
-import { format } from 'date-fns'
+import { compareDesc, format } from 'date-fns'
 import {
   PaginationButton,
   PaginationContainer,
@@ -63,7 +63,10 @@ export function TableWithHistory() {
           filterDate
             ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
             : bet,
-        ),
+        )
+        .sort((a: Bet, b: Bet) => {
+          return compareDesc(new Date(a.date), new Date(b.date))
+        }),
     )
   }, [bets, filterDate])
 
