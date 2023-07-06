@@ -1,11 +1,12 @@
 import { compareDesc, format } from 'date-fns'
 import { ButtonFinalize, ContainerActions } from './styles'
 import { ptBR } from 'date-fns/locale'
-import { Bet, BetsContext } from '../../../../contexts/BetsContext'
+import { BetsContext } from '../../../../contexts/BetsContext'
 import { useContext, useState } from 'react'
 import { Trash } from 'phosphor-react'
 import { ContainerTd, TableContainer } from '../../../../styles/global'
 import { ConfirmationFinalizeModal } from '../../../../components/ConfirmationFinalizeModal'
+import { Bet } from '../../../../@types/types'
 
 export function TableHistoryBets() {
   const { bets, formatCashField, handleFinalizeBet, handleDeleteBet } =
@@ -70,6 +71,8 @@ export function TableHistoryBets() {
             <th>ODD</th>
             <th>Retorno</th>
             <th>Lucro</th>
+            <th>Liga</th>
+            <th>Linha</th>
             <th>Data</th>
             <th>Finalizar</th>
             <th></th>
@@ -89,7 +92,18 @@ export function TableHistoryBets() {
                     <td>R$ {formatCashField(bet.value.toFixed(2))}</td>
                     <td>{bet.multiplier.toFixed(2)} X</td>
                     <td>R$ {formatCashField(bet.returnBet.toFixed(2))}</td>
-                    <td>R$ {formatCashField(bet.profitBet.toFixed(2))}</td>
+                    <td>
+                      R${' '}
+                      {bet.profitBet >= 0
+                        ? formatCashField(bet.profitBet.toFixed(2))
+                        : `- ${formatCashField(bet.profitBet.toFixed(2))}`}
+                    </td>
+                    <td>
+                      <span>{bet.league?.label ?? 'Nao informado'}</span>
+                    </td>
+                    <td>
+                      <span>{bet.line?.label ?? 'Nao informado'}</span>
+                    </td>
                     <td>
                       {format(new Date(bet.date), "d 'de' LLLL 'às' HH:mm'h'", {
                         locale: ptBR,
@@ -159,12 +173,24 @@ export function TableHistoryBets() {
                     <td>
                       <ContainerTd>
                         <span>
-                          R$ {formatCashField(bet.profitBet.toFixed(2))}
+                          R${' '}
+                          {bet.profitBet >= 0
+                            ? formatCashField(bet.profitBet.toFixed(2))
+                            : `- ${formatCashField(bet.profitBet.toFixed(2))}`}
                         </span>
                         <span>
-                          R$ {formatCashField(bet.profitBetB.toFixed(2))}
+                          R${' '}
+                          {bet.profitBetB >= 0
+                            ? formatCashField(bet.profitBetB.toFixed(2))
+                            : `- ${formatCashField(bet.profitBetB.toFixed(2))}`}
                         </span>
                       </ContainerTd>
+                    </td>
+                    <td>
+                      <span>{bet.league.label ?? 'Nao informado'}</span>
+                    </td>
+                    <td>
+                      <span>{bet.line.label ?? 'Nao informado'}</span>
                     </td>
                     <td>
                       {format(new Date(bet.date), "d 'de' LLLL 'às' HH:mm'h'", {

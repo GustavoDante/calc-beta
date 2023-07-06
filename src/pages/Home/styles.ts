@@ -61,14 +61,18 @@ export const FormRegisterBetContainer = styled.form`
   }
 `
 
-export const InputFormContainer = styled.div`
+interface InputFormContainerProps {
+  padding?: boolean
+}
+
+export const InputFormContainer = styled.div<InputFormContainerProps>`
   display: flex;
   justify-content: space-between;
   flex-direction: row;
   align-items: center;
   background: ${(props) => props.theme['purple-700']};
   border-radius: 14px;
-  padding: 0.7rem;
+  padding: ${(props) => (!props.padding ? '0.7rem' : '0')};
   margin-bottom: 1rem;
   border: 2px solid transparent;
 

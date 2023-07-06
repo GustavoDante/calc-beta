@@ -3,7 +3,7 @@ import { ContainerCard } from './styles'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
-import { Bet, BetsContext } from '../../../../contexts/BetsContext'
+import { BetsContext } from '../../../../contexts/BetsContext'
 import {
   FormRegisterBetContainer,
   InputFormContainer,
@@ -11,10 +11,14 @@ import {
   Separator,
 } from '../../styles'
 import { TitleCard } from '../../../../styles/global'
+import { Bet, league, line } from '../../../../@types/types'
+import { Dropdown } from '../Dropdown'
 
 const registerBetSchema = zod.object({
   value: zod.string().min(1, 'Valor mínimo de 1 real, por favor'),
   multiplier: zod.string().min(1, 'Valor mínimo de 1 real, por favor'),
+  league: zod.string().optional(),
+  line: zod.string().optional(),
 })
 
 export type RegisterBetData = zod.infer<typeof registerBetSchema>
@@ -34,6 +38,9 @@ export function FormRegisterBet({
   const [returnBet, setReturnBet] = useState(0)
   const [profitBet, setProfitBet] = useState(0)
 
+  const [league, setLeague] = useState<league>({ label: '', value: '' })
+  const [line, setLine] = useState<line>({ label: '', value: '' })
+
   const newRegisterBetForm = useForm<RegisterBetData>({
     resolver: zodResolver(registerBetSchema),
   })
@@ -47,6 +54,14 @@ export function FormRegisterBet({
     setProfitBet(0)
   }
 
+  const handleLeagueChange = (selectedOption: any) => {
+    setLeague(selectedOption)
+  }
+
+  const handleLineChange = (selectedOption: any) => {
+    setLine(selectedOption)
+  }
+
   function handleFormRegisterBet(data: RegisterBetData) {
     const date = new Date().toUTCString()
 
@@ -55,6 +70,8 @@ export function FormRegisterBet({
       multiplier: parseFloat(data.multiplier),
       returnBet,
       profitBet,
+      league,
+      line,
       win: null,
       winWin: false,
       whoWin: null,
@@ -109,6 +126,7 @@ export function FormRegisterBet({
           />
           <span>X</span>
         </InputFormContainer>
+
         <InputFormContainer>
           <input
             {...register('value', { required: true })}
@@ -148,6 +166,23 @@ export function FormRegisterBet({
           </span>
           <span>R$</span>
         </ReturnValueContainer>
+
+        <Separator />
+
+        <InputFormContainer padding={true}>
+          <Dropdown
+            type={'leagues'}
+            handleSelectChange={handleLeagueChange}
+            width={'250px'}
+          />
+        </InputFormContainer>
+        <InputFormContainer padding={true}>
+          <Dropdown
+            type={'lines'}
+            handleSelectChange={handleLineChange}
+            width={'250px'}
+          />
+        </InputFormContainer>
 
         <Separator />
 

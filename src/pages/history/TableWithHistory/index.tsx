@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { Bet, BetsContext } from '../../../contexts/BetsContext'
+import { BetsContext } from '../../../contexts/BetsContext'
 import { ContainerTd, TableContainer } from '../../../styles/global'
 import { compareDesc, format } from 'date-fns'
 import {
@@ -11,6 +11,7 @@ import {
 import ptBR from 'date-fns/locale/pt-BR'
 import { Trash } from 'phosphor-react'
 import { ConfirmationFinalizeModal } from '../../../components/ConfirmationFinalizeModal'
+import { Bet } from '../../../@types/types'
 
 export function TableWithHistory() {
   const { bets, formatCashField, handleDeleteBet, filterDate } =
@@ -80,6 +81,8 @@ export function TableWithHistory() {
             <th>ODD</th>
             <th>Retorno</th>
             <th>Saldo</th>
+            <th>Liga</th>
+            <th>Linha</th>
             <th>Data</th>
             <th></th>
           </tr>
@@ -106,6 +109,12 @@ export function TableWithHistory() {
                       </SpanWithStatus>
                     </td>
                   )}
+                  <td>
+                    <span>{bet.league?.label ?? 'Não informado'}</span>
+                  </td>
+                  <td>
+                    <span>{bet.line?.label ?? 'Não informado'}</span>
+                  </td>
                   <td>
                     {format(new Date(bet.date), "d 'de' LLLL 'às' HH:mm'h'", {
                       locale: ptBR,
@@ -196,6 +205,12 @@ export function TableWithHistory() {
                         R$ {formatCashField(bet.profitBetB.toFixed(2))}
                       </SpanWithStatus>
                     </ContainerTd>
+                  </td>
+                  <td>
+                    <span>{bet.league?.label ?? 'Não informado'}</span>
+                  </td>
+                  <td>
+                    <span>{bet.line?.label ?? 'Não informado'}</span>
                   </td>
                   <td>
                     {format(new Date(bet.date), "d 'de' LLLL 'às' HH:mm'h'", {

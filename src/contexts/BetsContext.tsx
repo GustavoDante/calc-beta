@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, limit, orderBy, query, setDoc, startAfter, updateDoc } from 'firebase/firestore' //eslint-disable-line
+import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc } from 'firebase/firestore' //eslint-disable-line
 import {
   ReactNode,
   createContext,
@@ -9,22 +9,8 @@ import {
 import { db } from '../services/firebaseConfig'
 import { AuthGoogleContext } from './AuthGoogleContext'
 import { format } from 'date-fns'
+import { Bet } from '../@types/types'
 
-export interface Bet {
-  id?: string
-  value: number
-  multiplier: number
-  returnBet: number
-  profitBet: number
-  win: boolean | null
-  winWin: boolean
-  whoWin: 1 | 2 | null
-  valueB: number
-  multiplierB: number
-  returnBetB: number
-  profitBetB: number
-  date: string
-}
 interface BetsContextData {
   bets: Bet[]
   formatCashField: (value: string) => string

@@ -15,9 +15,11 @@ import {
   WinWinContent,
   WinWinValueSugestionContainer,
 } from './styles'
-import { Bet, BetsContext } from '../../../../contexts/BetsContext'
+import { BetsContext } from '../../../../contexts/BetsContext'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Bet, league, line } from '../../../../@types/types'
+import { Dropdown } from '../Dropdown'
 
 const registerWinWinSchema = zod.object({
   teamAValue: zod.string().min(1, 'Valor mínimo de 1 real, por favor'),
@@ -50,11 +52,22 @@ export function FormRegisterWinWin({
   const [teamBReturnBet, setTeamBReturnBet] = useState<number>(0)
   const [teamBProfitBet, setTeamBProfitBet] = useState<number | null>(null)
 
+  const [league, setLeague] = useState<league>({ label: '', value: '' })
+  const [line, setLine] = useState<line>({ label: '', value: '' })
+
   const newRegisterWinWinForm = useForm<RegisterWinWinData>({
     resolver: zodResolver(registerWinWinSchema),
   })
 
   const { handleSubmit, register } = newRegisterWinWinForm
+
+  const handleLeagueChange = (selectedOption: any) => {
+    setLeague(selectedOption)
+  }
+
+  const handleLineChange = (selectedOption: any) => {
+    setLine(selectedOption)
+  }
 
   function resetInputs() {
     setTeamAValue('')
@@ -75,6 +88,8 @@ export function FormRegisterWinWin({
       multiplier: parseFloat(teamAMultiplier),
       returnBet: teamAReturnBet,
       profitBet: teamAProfitBet || 0,
+      league,
+      line,
       win: null,
       winWin: true,
       whoWin: null,
@@ -315,6 +330,21 @@ export function FormRegisterWinWin({
             <Separator />
           </div>
         </WinWinContent>
+        <InputFormContainer padding={true}>
+          <Dropdown
+            type={'leagues'}
+            handleSelectChange={handleLeagueChange}
+            width={'430px'}
+          />
+        </InputFormContainer>
+        <InputFormContainer padding={true}>
+          <Dropdown
+            type={'lines'}
+            handleSelectChange={handleLineChange}
+            width={'430px'}
+          />
+        </InputFormContainer>
+        <Separator />
         <button type="submit" disabled={!isButtonSubmitEnable}>
           Cadastrar
         </button>
