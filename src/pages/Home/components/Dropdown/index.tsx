@@ -24,7 +24,22 @@ const lines = [
   { value: 'over/under-time', label: 'Over/Under time' },
 ]
 
-export function Dropdown({ type, handleSelectChange, width }: any) {
+interface DropdownProps {
+  type: string
+  handleSelectChange: (value: any) => void
+  width: string
+  value: {
+    value: string
+    label: string
+  }
+}
+
+export function Dropdown({
+  type,
+  handleSelectChange,
+  width,
+  value,
+}: DropdownProps) {
   const customStyles = {
     control: (baseStyles: any, state: any) => ({
       ...baseStyles,
@@ -71,6 +86,7 @@ export function Dropdown({ type, handleSelectChange, width }: any) {
         },
       })}
       placeholder={placeholder}
+      value={value.label ? value : null}
     />
   )
 }

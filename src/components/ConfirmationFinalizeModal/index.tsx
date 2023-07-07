@@ -1,6 +1,6 @@
 import Modal from 'react-modal'
-import { Container, modalProps } from './styles'
-import { Bet } from '../../contexts/BetsContext'
+import { Bet } from '../../@types/types'
+import { ContainerModal, modalProps } from '../../styles/global'
 
 interface ConfirmationFinalizeModalProps {
   isOpen: boolean
@@ -24,7 +24,7 @@ export function ConfirmationFinalizeModal({
       onRequestClose={onRequestClose}
       style={modalProps}
     >
-      <Container>
+      <ContainerModal>
         <header>
           {finalizeBetWith === 'delete' ? 'Excluir ' : 'Finalizar '}aposta
         </header>
@@ -53,7 +53,7 @@ export function ConfirmationFinalizeModal({
           <button onClick={() => handleFinalizeBet(bet.id!)}>Confirmar</button>
           <button onClick={onRequestClose}>Cancelar</button>
         </footer>
-      </Container>
+      </ContainerModal>
     </Modal>
   )
 }

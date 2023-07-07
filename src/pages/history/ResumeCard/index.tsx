@@ -12,22 +12,22 @@ import { TitleCard } from '../../../styles/global'
 import { format } from 'date-fns'
 
 export function ResumeCard() {
-  const { bets, formatCashField, FinanceResume, valueTotal, filterDate } =
+  const { bets, formatCashField, FinanceResume, valueTotal, filter } =
     useContext(BetsContext)
 
   const totalBets = bets
     .filter((bet) => bet.win !== null)
     .filter((bet) =>
-      filterDate
-        ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+      filter.date
+        ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date
         : bet,
     ).length
 
   const totalWins = bets
     .filter((bet) => bet.win !== null)
     .filter((bet) =>
-      filterDate
-        ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+      filter.date
+        ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date
         : bet,
     )
     .filter((bet) => bet.win).length
@@ -35,8 +35,8 @@ export function ResumeCard() {
   const totalPeddingBets = bets
     .filter((bet) => bet.win === null)
     .filter((bet) =>
-      filterDate
-        ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+      filter.date
+        ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date
         : bet,
     ).length
 
@@ -80,8 +80,8 @@ export function ResumeCard() {
                   .filter((bet) => bet.winWin === true)
                   .filter((bet) => bet.win !== null)
                   .filter((bet) =>
-                    filterDate
-                      ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+                    filter.date
+                      ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date
                       : bet,
                   ).length
               }

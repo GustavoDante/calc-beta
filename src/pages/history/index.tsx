@@ -4,47 +4,35 @@ import {
   ActionsContainer,
   Container,
   DeleteAllBets,
-  FilterContainer,
-  FilterDate,
+  FilterButton,
 } from './styles'
 import { TableWithHistory } from './TableWithHistory'
 import { useContext, useState } from 'react'
+import FilterIcon from '../../assets/filter.svg'
 import { BetsContext } from '../../contexts/BetsContext'
 import { DeleteAllBetsConfirmationModal } from './components/deleteAllBetsConfirmationModal'
-import CalendarIcon from '../../assets/calendar.svg'
-import FilterIcon from '../../assets/filter.svg'
-import FilterSlash from '../../assets/filter-slash.svg'
+import { FilterBetsModal } from './components/filterBetsModal'
 
 export function History() {
-  const { resetBets, setFilterDate, filterDate } = useContext(BetsContext)
-  const [showModal, setShowModal] = useState<boolean>(false)
+  const { resetBets, handleSetFilter } = useContext(BetsContext)
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
+  const [showFilterModal, setShowFilterModal] = useState<boolean>(false)
 
   function handleDeleteAllBets() {
-    setShowModal(true)
+    setShowDeleteModal(true)
+  }
+
+  function handleFilterBets() {
+    setShowFilterModal(true)
   }
 
   return (
     <Container>
       <ResumeCard />
       <ActionsContainer>
-        <FilterContainer isFiltered={!!filterDate}>
-          <div>
-            <img src={FilterIcon} alt="" />
-            <FilterDate
-              type="date"
-              value={filterDate}
-              min="2023-01-01"
-              max={new Date().toISOString().split('T')[0]}
-              icon={CalendarIcon}
-              onChange={(e) => setFilterDate(e.target.value)}
-            ></FilterDate>
-          </div>
-
-          <button type="button" onClick={() => setFilterDate('')}>
-            <img src={FilterSlash} alt="" />
-          </button>
-        </FilterContainer>
-
+        <FilterButton type="button" onClick={handleFilterBets}>
+          <img src={FilterIcon} alt="" />
+        </FilterButton>
         <DeleteAllBets type="button" onClick={handleDeleteAllBets}>
           Excluir tudo <Trash size={20} />
         </DeleteAllBets>
@@ -53,8 +41,13 @@ export function History() {
       <TableWithHistory />
       <DeleteAllBetsConfirmationModal
         deleteAllBets={resetBets}
-        isOpen={showModal}
-        onRequestClose={() => setShowModal(false)}
+        isOpen={showDeleteModal}
+        onRequestClose={() => setShowDeleteModal(false)}
+      />
+      <FilterBetsModal
+        isOpen={showFilterModal}
+        onRequestClose={() => setShowFilterModal(false)}
+        filterBets={() => handleSetFilter}
       />
     </Container>
   )

@@ -14,14 +14,14 @@ import { ConfirmationFinalizeModal } from '../../../components/ConfirmationFinal
 import { Bet } from '../../../@types/types'
 
 export function TableWithHistory() {
-  const { bets, formatCashField, handleDeleteBet, filterDate } =
+  const { bets, formatCashField, handleDeleteBet, filter } =
     useContext(BetsContext)
   const [filteredBets, setFilteredBets] = useState<Bet[]>(
     bets
       .filter((bet) => bet.win !== null)
       .filter((bet) =>
-        filterDate
-          ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+        filter.date
+          ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date
           : bet,
       ),
   )
@@ -61,15 +61,15 @@ export function TableWithHistory() {
       bets
         .filter((bet) => bet.win !== null)
         .filter((bet) =>
-          filterDate
-            ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+          filter.date
+            ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date
             : bet,
         )
         .sort((a: Bet, b: Bet) => {
           return compareDesc(new Date(a.date), new Date(b.date))
         }),
     )
-  }, [bets, filterDate])
+  }, [bets, filter])
 
   return (
     <TableContainer>

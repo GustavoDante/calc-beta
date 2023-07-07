@@ -1,8 +1,5 @@
 import Modal from 'react-modal'
-import {
-  Container,
-  modalProps,
-} from '../../../../components/ConfirmationFinalizeModal/styles'
+import { ContainerModal, modalProps } from '../../../../styles/global'
 
 interface DeleteAllBetsConfirmationModalProps {
   isOpen: boolean
@@ -26,7 +23,7 @@ export function DeleteAllBetsConfirmationModal({
       onRequestClose={onRequestClose}
       style={modalProps}
     >
-      <Container>
+      <ContainerModal>
         <header>Excluir todos registros</header>
         <button onClick={onRequestClose}>x</button>
         <div>
@@ -36,7 +33,7 @@ export function DeleteAllBetsConfirmationModal({
           <button onClick={() => handleDeleteAllBets()}>Confirmar</button>
           <button onClick={onRequestClose}>Cancelar</button>
         </footer>
-      </Container>
+      </ContainerModal>
     </Modal>
   )
 }

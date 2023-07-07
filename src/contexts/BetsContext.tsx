@@ -11,17 +11,25 @@ import { AuthGoogleContext } from './AuthGoogleContext'
 import { format } from 'date-fns'
 import { Bet } from '../@types/types'
 
+interface filter {
+  date: string
+  league: string
+  line: string
+}
 interface BetsContextData {
   bets: Bet[]
   formatCashField: (value: string) => string
   handleRegisterBet: (bet: Bet) => void
   FinanceResume: number
   valueTotal: number
-  filterDate: string
+  filter: filter
   setFilterDate: (date: string) => void
   handleFinalizeBet: (id: string, win: boolean, whoWin: 1 | 2 | null) => void
   handleDeleteBet: (id: string) => void
   resetBets: () => void
+  setFilterLeague: (league: string) => void
+  setFilterLine: (line: string) => void
+  handleSetFilter: (filter: filter) => void
 }
 
 export const BetsContext = createContext({} as BetsContextData)
@@ -34,10 +42,18 @@ export function BetsProvider({ children }: BetsProviderProps) {
   const { user } = useContext(AuthGoogleContext)
   const [bets, setBets] = useState<Bet[]>([])
   const [filterDate, setFilterDate] = useState('')
+  const [filterLeague, setFilterLeague] = useState('')
+  const [filterLine, setFilterLine] = useState('')
   const [FinanceResume, setFinanceResume] = useState(0)
   const [valueTotal, setValueTotal] = useState(0)
 
   const currentUser = user?.email || ''
+
+  const [filter, setFilter] = useState<filter>({
+    date: filterDate,
+    league: filterLeague,
+    line: filterLine,
+  })
 
   const colletionRef = currentUser
     ? collection(db, 'users', currentUser, 'bets')
@@ -51,6 +67,10 @@ export function BetsProvider({ children }: BetsProviderProps) {
     retorno = retorno.replace(/(?=(\d{3})+(\D))\B/g, '.')
 
     return retorno
+  }
+
+  function handleSetFilter(filter: filter) {
+    setFilter(filter)
   }
 
   async function handleRegisterBet(bet: Bet) {
@@ -206,8 +226,11 @@ export function BetsProvider({ children }: BetsProviderProps) {
         handleFinalizeBet,
         handleDeleteBet,
         resetBets,
-        filterDate,
+        filter,
         setFilterDate,
+        setFilterLeague,
+        setFilterLine,
+        handleSetFilter,
       }}
     >
       {children}

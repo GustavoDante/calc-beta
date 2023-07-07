@@ -335,6 +335,7 @@ export function FormRegisterWinWin({
             type={'leagues'}
             handleSelectChange={handleLeagueChange}
             width={'430px'}
+            value={league}
           />
         </InputFormContainer>
         <InputFormContainer padding={true}>
@@ -342,6 +343,7 @@ export function FormRegisterWinWin({
             type={'lines'}
             handleSelectChange={handleLineChange}
             width={'430px'}
+            value={line}
           />
         </InputFormContainer>
         <Separator />

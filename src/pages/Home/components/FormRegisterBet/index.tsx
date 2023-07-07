@@ -52,6 +52,8 @@ export function FormRegisterBet({
     setMultiplier('')
     setReturnBet(0)
     setProfitBet(0)
+    setLeague({ label: '', value: '' })
+    setLine({ label: '', value: '' })
   }
 
   const handleLeagueChange = (selectedOption: any) => {
@@ -174,6 +176,7 @@ export function FormRegisterBet({
             type={'leagues'}
             handleSelectChange={handleLeagueChange}
             width={'250px'}
+            value={league}
           />
         </InputFormContainer>
         <InputFormContainer padding={true}>
@@ -181,6 +184,7 @@ export function FormRegisterBet({
             type={'lines'}
             handleSelectChange={handleLineChange}
             width={'250px'}
+            value={line}
           />
         </InputFormContainer>
 
