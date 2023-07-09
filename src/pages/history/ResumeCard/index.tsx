@@ -18,6 +18,12 @@ export function ResumeCard() {
   const totalBets = bets
     .filter((bet) => bet.win !== null)
     .filter((bet) =>
+      filter.league.label ? bet.league?.value === filter.league.value : bet,
+    )
+    .filter((bet) =>
+      filter.line.value ? bet.line?.value === filter.line.value : bet,
+    )
+    .filter((bet) =>
       filter.date
         ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date
         : bet,
@@ -25,6 +31,12 @@ export function ResumeCard() {
 
   const totalWins = bets
     .filter((bet) => bet.win !== null)
+    .filter((bet) =>
+      filter.league.label ? bet.league?.value === filter.league.value : bet,
+    )
+    .filter((bet) =>
+      filter.line.value ? bet.line?.value === filter.line.value : bet,
+    )
     .filter((bet) =>
       filter.date
         ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date
@@ -34,6 +46,12 @@ export function ResumeCard() {
 
   const totalPeddingBets = bets
     .filter((bet) => bet.win === null)
+    .filter((bet) =>
+      filter.league.label ? bet.league?.value === filter.league.value : bet,
+    )
+    .filter((bet) =>
+      filter.line.value ? bet.line?.value === filter.line.value : bet,
+    )
     .filter((bet) =>
       filter.date
         ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date
@@ -79,6 +97,16 @@ export function ResumeCard() {
                 bets
                   .filter((bet) => bet.winWin === true)
                   .filter((bet) => bet.win !== null)
+                  .filter((bet) =>
+                    filter.league.label
+                      ? bet.league?.value === filter.league.value
+                      : bet,
+                  )
+                  .filter((bet) =>
+                    filter.line.value
+                      ? bet.line?.value === filter.line.value
+                      : bet,
+                  )
                   .filter((bet) =>
                     filter.date
                       ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date

@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 import { AuthGoogleContext } from '../../../../contexts/AuthGoogleContext'
 import Modal from 'react-modal'
-import { modalProps } from '../../../ConfirmationFinalizeModal/styles'
 import { Container } from './styles'
+import { modalProps } from '../../../../styles/global'
 
 interface logoutConfirmationModalProps {
   isOpen: boolean

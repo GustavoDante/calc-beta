@@ -1,27 +1,57 @@
 import Modal from 'react-modal'
 import CalendarIcon from '../../../../assets/calendar.svg'
 import FilterSlash from '../../../../assets/filter-slash.svg'
-import { useContext } from 'react'
+import { ChangeEvent, useContext, useState } from 'react'
 import { BetsContext } from '../../../../contexts/BetsContext'
-import { FilterContainer, FilterDate } from './styles'
+import { ButtonClear, FilterContainer, FilterDate } from './styles'
 import { ContainerModal, modalProps } from '../../../../styles/global'
+import { Dropdown } from '../../../../components/Dropdown'
+import { league, line } from '../../../../@types/types'
 
 interface FilterBetsModalProps {
   isOpen: boolean
   onRequestClose: () => void
-  filterBets: () => void
 }
 export function FilterBetsModal({
   isOpen,
   onRequestClose,
-  filterBets,
 }: FilterBetsModalProps) {
-  const { filter, setFilterDate } = useContext(BetsContext)
+  const { filter, handleSetFilter } = useContext(BetsContext)
 
-  function handleFilterBets() {
-    filterBets()
+  const [date, setDate] = useState<string>(filter.date)
+  const [league, setLeague] = useState<league>(filter.league)
+  const [line, setLine] = useState<line>({ label: '', value: '' })
+
+  function handleClearFilter() {
+    setDate('')
+    setLeague({ label: '', value: '' })
+    setLine({ label: '', value: '' })
+  }
+
+  function handleFilter() {
+    handleSetFilter({
+      date: date === '' ? '' : date,
+      league,
+      line,
+    })
     onRequestClose()
   }
+
+  const handleLeagueChange = (selectedOption: any) => {
+    setLeague(selectedOption)
+  }
+
+  const handleLineChange = (selectedOption: any) => {
+    setLine(selectedOption)
+  }
+
+  const handleDateChange = (selectedOption: string) => {
+    setDate(selectedOption)
+  }
+
+  //   useEffect(() => {
+  //     handleFilter()
+  //   }, [league, line, date])
 
   return (
     <Modal
@@ -38,31 +68,40 @@ export function FilterBetsModal({
             <h2>Data:</h2>
             <FilterDate
               type="date"
-              value={filter.date}
+              value={date}
               min="2023-01-01"
               max={new Date().toISOString().split('T')[0]}
               icon={CalendarIcon}
-              onChange={(e) => setFilterDate(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                handleDateChange(e.target.value)
+              }
             ></FilterDate>
           </div>
           <div>
-            <h2>Data:</h2>
-            <FilterDate
-              type="date"
-              value={filter.date}
-              min="2023-01-01"
-              max={new Date().toISOString().split('T')[0]}
-              icon={CalendarIcon}
-              onChange={(e) => setFilterDate(e.target.value)}
-            ></FilterDate>
+            <h2>Liga:</h2>
+            <Dropdown
+              type={'leagues'}
+              handleSelectChange={handleLeagueChange}
+              width={'290px'}
+              value={league}
+            />
+          </div>
+          <div>
+            <h2>Linha:</h2>
+            <Dropdown
+              type={'lines'}
+              handleSelectChange={handleLineChange}
+              width={'290px'}
+              value={line}
+            />
           </div>
         </FilterContainer>
         <footer>
-          <button onClick={() => handleFilterBets()}>Filtrar</button>
-          <button onClick={onRequestClose}>
+          <button onClick={handleFilter}>Filtrar</button>
+          <ButtonClear onClick={handleClearFilter}>
             Limpar
             <img src={FilterSlash} alt="" />
-          </button>
+          </ButtonClear>
         </footer>
       </ContainerModal>
     </Modal>

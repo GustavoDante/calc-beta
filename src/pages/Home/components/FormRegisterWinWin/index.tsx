@@ -19,7 +19,7 @@ import { BetsContext } from '../../../../contexts/BetsContext'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Bet, league, line } from '../../../../@types/types'
-import { Dropdown } from '../Dropdown'
+import { Dropdown } from '../../../../components/Dropdown'
 
 const registerWinWinSchema = zod.object({
   teamAValue: zod.string().min(1, 'Valor mínimo de 1 real, por favor'),

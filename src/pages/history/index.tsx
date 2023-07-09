@@ -14,7 +14,7 @@ import { DeleteAllBetsConfirmationModal } from './components/deleteAllBetsConfir
 import { FilterBetsModal } from './components/filterBetsModal'
 
 export function History() {
-  const { resetBets, handleSetFilter } = useContext(BetsContext)
+  const { resetBets } = useContext(BetsContext)
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
   const [showFilterModal, setShowFilterModal] = useState<boolean>(false)
 
@@ -47,7 +47,6 @@ export function History() {
       <FilterBetsModal
         isOpen={showFilterModal}
         onRequestClose={() => setShowFilterModal(false)}
-        filterBets={() => handleSetFilter}
       />
     </Container>
   )

@@ -140,6 +140,7 @@ export const ContainerModal = styled.div`
   align-items: center;
   justify-content: center;
   padding: 1rem;
+  min-width: 20rem;
 
   background: ${(props) => props.theme['gray-800']};
 

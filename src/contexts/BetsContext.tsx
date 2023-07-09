@@ -9,12 +9,12 @@ import {
 import { db } from '../services/firebaseConfig'
 import { AuthGoogleContext } from './AuthGoogleContext'
 import { format } from 'date-fns'
-import { Bet } from '../@types/types'
+import { Bet, league, line } from '../@types/types'
 
 interface filter {
   date: string
-  league: string
-  line: string
+  league: league
+  line: line
 }
 interface BetsContextData {
   bets: Bet[]
@@ -23,12 +23,9 @@ interface BetsContextData {
   FinanceResume: number
   valueTotal: number
   filter: filter
-  setFilterDate: (date: string) => void
   handleFinalizeBet: (id: string, win: boolean, whoWin: 1 | 2 | null) => void
   handleDeleteBet: (id: string) => void
   resetBets: () => void
-  setFilterLeague: (league: string) => void
-  setFilterLine: (line: string) => void
   handleSetFilter: (filter: filter) => void
 }
 
@@ -41,18 +38,15 @@ interface BetsProviderProps {
 export function BetsProvider({ children }: BetsProviderProps) {
   const { user } = useContext(AuthGoogleContext)
   const [bets, setBets] = useState<Bet[]>([])
-  const [filterDate, setFilterDate] = useState('')
-  const [filterLeague, setFilterLeague] = useState('')
-  const [filterLine, setFilterLine] = useState('')
   const [FinanceResume, setFinanceResume] = useState(0)
   const [valueTotal, setValueTotal] = useState(0)
 
   const currentUser = user?.email || ''
 
   const [filter, setFilter] = useState<filter>({
-    date: filterDate,
-    league: filterLeague,
-    line: filterLine,
+    date: '',
+    league: { label: '', value: '' },
+    line: { label: '', value: '' },
   })
 
   const colletionRef = currentUser
@@ -153,9 +147,15 @@ export function BetsProvider({ children }: BetsProviderProps) {
       .filter((bet) => bet.win === true)
       .filter((bet) => bet.winWin === false)
       .filter((bet) =>
-        filterDate
-          ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+        filter.date
+          ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date
           : bet,
+      )
+      .filter((bet) =>
+        filter.league.label ? bet.league?.value === filter.league.value : bet,
+      )
+      .filter((bet) =>
+        filter.line.value ? bet.line?.value === filter.line.value : bet,
       )
       .reduce((total, bet) => total + bet.profitBet, 0)
 
@@ -163,9 +163,15 @@ export function BetsProvider({ children }: BetsProviderProps) {
       .filter((bet) => bet.win === true)
       .filter((bet) => bet.winWin === true)
       .filter((bet) =>
-        filterDate
-          ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+        filter.date
+          ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date
           : bet,
+      )
+      .filter((bet) =>
+        filter.league.label ? bet.league?.value === filter.league.value : bet,
+      )
+      .filter((bet) =>
+        filter.line.value ? bet.line?.value === filter.line.value : bet,
       )
       .reduce(
         (total, bet) =>
@@ -176,9 +182,15 @@ export function BetsProvider({ children }: BetsProviderProps) {
     const valueOfLosses = bets
       .filter((bet) => bet.win === false)
       .filter((bet) =>
-        filterDate
-          ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+        filter.date
+          ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date
           : bet,
+      )
+      .filter((bet) =>
+        filter.league.label ? bet.league?.value === filter.league.value : bet,
+      )
+      .filter((bet) =>
+        filter.line.value ? bet.line?.value === filter.line.value : bet,
       )
       .reduce((total, value) => total + value.value, 0)
 
@@ -188,22 +200,35 @@ export function BetsProvider({ children }: BetsProviderProps) {
   function calcValueTotal() {
     const valueTotalOfSimpleBet = bets
       .filter((bet) =>
-        filterDate
-          ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+        filter.date
+          ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date
           : bet,
+      )
+      .filter((bet) =>
+        filter.league.label ? bet.league?.value === filter.league.value : bet,
+      )
+      .filter((bet) =>
+        filter.line.value ? bet.line?.value === filter.line.value : bet,
       )
       .reduce((total, value) => total + value.value, 0)
 
     const valueTotalOfWinsWins = bets
       .filter((bet) =>
-        filterDate
-          ? format(new Date(bet.date), 'yyyy-MM-dd') === filterDate
+        filter.date
+          ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date
           : bet,
+      )
+      .filter((bet) =>
+        filter.league.label ? bet.league?.value === filter.league.value : bet,
+      )
+      .filter((bet) =>
+        filter.line.value ? bet.line?.value === filter.line.value : bet,
       )
       .filter((bet) => bet.winWin === true)
       .reduce((total, bet) => total + bet.valueB, 0)
 
     setValueTotal(valueTotalOfSimpleBet + valueTotalOfWinsWins)
+    console.log(filter)
   }
 
   useEffect(() => {
@@ -213,7 +238,7 @@ export function BetsProvider({ children }: BetsProviderProps) {
   useEffect(() => {
     calcFinanceResume()
     calcValueTotal()
-  }, [bets, filterDate])
+  }, [bets, filter])
 
   return (
     <BetsContext.Provider
@@ -227,9 +252,6 @@ export function BetsProvider({ children }: BetsProviderProps) {
         handleDeleteBet,
         resetBets,
         filter,
-        setFilterDate,
-        setFilterLeague,
-        setFilterLine,
         handleSetFilter,
       }}
     >

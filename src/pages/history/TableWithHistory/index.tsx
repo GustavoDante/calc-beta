@@ -20,6 +20,12 @@ export function TableWithHistory() {
     bets
       .filter((bet) => bet.win !== null)
       .filter((bet) =>
+        filter.league.label ? bet.league?.value === filter.league.value : bet,
+      )
+      .filter((bet) =>
+        filter.line.value ? bet.line?.value === filter.line.value : bet,
+      )
+      .filter((bet) =>
         filter.date
           ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date
           : bet,
@@ -60,6 +66,12 @@ export function TableWithHistory() {
     setFilteredBets(
       bets
         .filter((bet) => bet.win !== null)
+        .filter((bet) =>
+          filter.league.label ? bet.league?.value === filter.league.value : bet,
+        )
+        .filter((bet) =>
+          filter.line.value ? bet.line?.value === filter.line.value : bet,
+        )
         .filter((bet) =>
           filter.date
             ? format(new Date(bet.date), 'yyyy-MM-dd') === filter.date

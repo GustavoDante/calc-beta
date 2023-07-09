@@ -12,7 +12,7 @@ import {
 } from '../../styles'
 import { TitleCard } from '../../../../styles/global'
 import { Bet, league, line } from '../../../../@types/types'
-import { Dropdown } from '../Dropdown'
+import { Dropdown } from '../../../../components/Dropdown'
 
 const registerBetSchema = zod.object({
   value: zod.string().min(1, 'Valor mínimo de 1 real, por favor'),

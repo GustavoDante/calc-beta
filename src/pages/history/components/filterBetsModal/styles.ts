@@ -69,5 +69,32 @@ export const FilterContainer = styled.div<FilterContainerProps>`
     justify-content: center;
     align-items: center;
     text-align: center;
+
+    + div {
+      margin-top: 1.5rem;
+    }
+
+    & > div {
+      margin-top: 1rem;
+      background: ${(props) => props.theme['purple-700']};
+      border-radius: 0.25rem;
+    }
+
+    & > input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 1rem;
+    }
+  }
+`
+
+export const ButtonClear = styled.button`
+  display: flex;
+  align-items: center;
+
+  & > img {
+    width: 0.9rem;
+    height: 0.9rem;
+    margin-left: 0.5rem;
   }
 `
